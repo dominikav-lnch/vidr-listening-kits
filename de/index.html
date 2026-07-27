@@ -91,7 +91,7 @@ button:hover { filter: brightness(1.08); }
 
     <button type="button" id="go">Generate my answers</button>
     <textarea id="out" readonly></textarea>
-    
+    <section class="clip" id="done" style="display:none" data-form="1FAIpQLSdJLdxf5XM8yp9iDj096FrxSLCx39M026_XEwC6uMfrkitkNA" data-entry="997611096"><h3>Two last steps</h3><p><b>1.</b> Send us your answers.</p><p><button type="button" id="send">Send my answers</button><span id="sent" style="margin-left:10px"></span></p><p class="note">Not working? Paste the text above into <a href="https://docs.google.com/forms/d/e/1FAIpQLSdJLdxf5XM8yp9iDj096FrxSLCx39M026_XEwC6uMfrkitkNA/viewform" target="_blank" rel="noreferrer">this form</a> instead.</p><p><b>2.</b> Then register your submission so you get paid.</p><p>Your completion code: <b>VIDRDE01</b></p><p><a href="https://app.prolific.com/submissions/complete?cc=VIDRDE01"><button type="button">Finish on Prolific</button></a></p></section>
   </form>
 </main>
 
@@ -137,6 +137,32 @@ document.getElementById("go").addEventListener("click", () => {
   out.select();
   out.scrollIntoView({ behavior: "smooth", block: "center" });
 });
+
+// Post the sheet to the form ourselves. The response is opaque by design, so
+// the manual paste route stays on the page as the fallback.
+const send = document.getElementById("send");
+if (send) {
+  send.addEventListener("click", async () => {
+    const done = document.getElementById("done");
+    const body = new URLSearchParams();
+    body.set("entry." + done.dataset.entry, document.getElementById("out").value);
+    send.disabled = true;
+    send.textContent = "Sending...";
+    try {
+      await fetch(
+        "https://docs.google.com/forms/d/e/" + done.dataset.form + "/formResponse",
+        { method: "POST", mode: "no-cors", body }
+      );
+      send.textContent = "Answers sent";
+      document.getElementById("sent").textContent = "✓";
+    } catch (error) {
+      send.disabled = false;
+      send.textContent = "Send my answers";
+      document.getElementById("sent").textContent =
+        "could not send - please use the form link below";
+    }
+  });
+}
 </script>
 </body>
 </html>
