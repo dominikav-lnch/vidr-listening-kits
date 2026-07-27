@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Listening task — Croatian narration</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%F0%9F%8E%A7%3C/text%3E%3C/svg%3E">
+<style>
+:root { color-scheme: light dark; --line: #cfcabd; --ink: #23231f; --paper: #fbf9f4; --accent: #a85f36; }
+@media (prefers-color-scheme: dark) {
+  :root { --line: #49473f; --ink: #eee9df; --paper: #1c1c19; --accent: #e59462; }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; line-height: 1.55;
+}
+main { max-width: 760px; margin: 0 auto; padding: 26px 20px 80px; }
+h1 { font-size: 22px; margin: 0 0 6px; }
+h3 { margin: 0 0 10px; font-size: 17px; }
+.intro { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 22px; }
+.intro ol { margin: 8px 0 0; padding-left: 20px; }
+.intro li { margin-bottom: 5px; }
+.clip { border: 1px solid var(--line); border-radius: 10px; padding: 15px 16px; margin-bottom: 16px; }
+audio { width: 100%; height: 36px; margin-bottom: 12px; }
+label { display: block; font-size: 14px; margin-bottom: 12px; }
+select, textarea, input[type=text] {
+  display: block; width: 100%; margin-top: 4px; padding: 7px 9px;
+  border: 1px solid var(--line); border-radius: 7px;
+  background: transparent; color: inherit; font: inherit; font-size: 14px;
+}
+textarea { resize: vertical; }
+button {
+  background: var(--accent); color: #fff; border: 0; border-radius: 8px;
+  padding: 11px 18px; font: inherit; font-weight: 600; cursor: pointer;
+}
+button:hover { filter: brightness(1.08); }
+#out {
+  width: 100%; min-height: 130px; margin-top: 14px; font-family: Consolas, monospace;
+  font-size: 12px; display: none;
+}
+.note { font-size: 13px; opacity: .8; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Listening task — Croatian narration</h1>
+  <p class="note">Takes about 10 minutes. Please use headphones.</p>
+
+  <div class="intro">
+    <strong>What this is.</strong> You will hear 1 recordings of the same
+    short documentary passage in Croatian. They are read by different voices.
+    We need a native speaker's judgement on how they sound.
+    <p style="margin:10px 0 0"><strong>What we are looking for.</strong> We are
+    choosing a narrator for <em>historical documentary films in Croatian</em>.
+    The voice has to sound genuinely native — like someone from your country, not
+    a foreigner reading Croatian well. It has to be calm and captivating: the
+    kind of voice you would happily follow through a whole film. It must
+    <em>not</em> be boring, flat or tiring. Please judge the clips against exactly
+    that.</p>
+    <ol>
+      <li>Listen to each clip <em>all the way through</em> before scoring it.</li>
+      <li>Score every clip on accent and naturalness, and note any word, name or
+          date that is pronounced wrongly.</li>
+      <li>At the end, rank the clips and tell us which one you would pick.</li>
+      <li>Press <em>Generate my answers</em> and send back the text that appears.</li>
+    </ol>
+    <p class="note" style="margin-bottom:0">
+      There is no "right" answer we are hoping for — the clips genuinely differ in
+      quality, and telling us that one is bad is as useful as telling us one is good.
+    </p>
+  </div>
+
+  <form id="form">
+    <section class="clip"><h3>Clip A</h3><audio controls preload="none" src="clips/clip-A.mp3"></audio><div class="q"><label>Accent — does this sound like a native speaker of Croatian?<select data-q="accent" data-clip="A"><option value=''>—</option><option value='5'>5 — clearly native</option><option value='4'>4 — native, tiny doubts</option><option value='3'>3 — hard to tell</option><option value='2'>2 — probably foreign</option><option value='1'>1 — clearly foreign accent</option></select></label><label>Naturalness — does it sound like a human narrator, not a machine?<select data-q="natural" data-clip="A"><option value=''>—</option><option value='5'>5 — fully natural</option><option value='4'>4 — natural, minor stiffness</option><option value='3'>3 — noticeably synthetic</option><option value='2'>2 — robotic</option><option value='1'>1 — unusable</option></select></label><label>Any mispronounced word, name or date? Write it down (and roughly when).<textarea data-q="errors" data-clip="A" rows="2"></textarea></label><label><b>Charm — as the narrator of a historical documentary, this voice is…</b><select data-q="charm" data-clip="A"><option value=''>—</option><option value='5'>5 — captivating, I would keep listening</option><option value='4'>4 — pleasant</option><option value='3'>3 — neither here nor there</option><option value='2'>2 — dull</option><option value='1'>1 — boring, I would lose interest</option></select></label><label><b>Listening effort — one hour of this voice would be…</b><select data-q="effort" data-clip="A"><option value=''>—</option><option value='5'>5 — calm, easy, I would forget it is narration</option><option value='4'>4 — comfortable</option><option value='3'>3 — neutral</option><option value='2'>2 — tiring, I would need breaks</option><option value='1'>1 — exhausting, I would switch it off</option></select></label><label><b>Would you watch a 60-minute documentary narrated by this voice?</b><select data-q="watch" data-clip="A"><option value=''>—</option><option value='yes'>Yes</option><option value='no'>No</option></select></label></div></section>
+
+    <section class="clip">
+      <h3>Overall</h3>
+      
+      <label>Did any clip sound like the reader was <em>not</em> a native speaker of
+        Croatian? Which, and what gave it away?
+        <textarea data-q="foreign" rows="3"></textarea>
+      </label>
+      <label>Your first language
+        <input type="text" data-q="l1" placeholder="e.g. Croatian">
+      </label>
+      <label>Anything else we should know?
+        <textarea data-q="notes" rows="2"></textarea>
+      </label>
+    </section>
+
+    <button type="button" id="go">Generate my answers</button>
+    <textarea id="out" readonly></textarea>
+    
+  </form>
+</main>
+
+<script>
+document.getElementById("go").addEventListener("click", () => {
+  const params = new URLSearchParams(location.search);
+  const answers = {
+    language: "hr",
+    participant: params.get("PROLIFIC_PID") || null,
+    study: params.get("STUDY_ID") || null,
+    session: params.get("SESSION_ID") || null,
+    clips: {}, overall: {}
+  };
+  for (const el of document.querySelectorAll("[data-q]")) {
+    const q = el.dataset.q;
+    const clip = el.dataset.clip;
+    if (clip) {
+      answers.clips[clip] = answers.clips[clip] || {};
+      answers.clips[clip][q] = el.value;
+    } else {
+      answers.overall[q] = el.value;
+    }
+  }
+  const missing = [];
+  for (const [clip, row] of Object.entries(answers.clips)) {
+    for (const key of ["accent", "natural", "charm", "effort", "watch"]) {
+      if (!row[key]) missing.push(`clip ${clip}: ${key}`);
+    }
+  }
+  if (document.querySelector('[data-q="best"]') && !answers.overall.best) {
+    missing.push("overall: best clip");
+  }
+  const out = document.getElementById("out");
+  out.style.display = "block";
+  if (missing.length) {
+    out.value = "Please fill these in first:\n- " + missing.join("\n- ");
+    out.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  out.value = JSON.stringify(answers, null, 2);
+  const done = document.getElementById("done");
+  if (done) done.style.display = "block";
+  out.select();
+  out.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+</script>
+</body>
+</html>
