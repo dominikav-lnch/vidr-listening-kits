@@ -223,33 +223,38 @@ document.getElementById("go").addEventListener("click", () => {
   if (done) done.style.display = "block";
   out.select();
   out.scrollIntoView({ behavior: "smooth", block: "center" });
+  // Fire the submission the moment valid answers exist. In the first live run
+  // one participant of ten took the completion code without pressing send and
+  // their answers died with the tab - a manual send after payment is a step
+  // nobody is motivated to take. The button stays as a visible retry.
+  postAnswers();
 });
 
 // Post the sheet ourselves. The response is opaque by design, so the manual paste
 // route stays on the page as the fallback.
-const send = document.getElementById("send");
-if (send) {
-  send.addEventListener("click", async () => {
-    const done = document.getElementById("done");
-    const body = new URLSearchParams();
-    body.set("entry." + done.dataset.entry, document.getElementById("out").value);
-    send.disabled = true;
-    send.textContent = "Sending...";
-    try {
-      await fetch(
-        "https://docs.google.com/forms/d/e/" + done.dataset.form + "/formResponse",
-        { method: "POST", mode: "no-cors", body }
-      );
-      send.textContent = "Answers sent";
-      document.getElementById("sent").textContent = "✓";
-    } catch (error) {
-      send.disabled = false;
-      send.textContent = "Send my answers";
-      document.getElementById("sent").textContent =
-        "could not send - please use the form link below";
-    }
-  });
+async function postAnswers() {
+  const done = document.getElementById("done");
+  const send = document.getElementById("send");
+  if (!done || !done.dataset.form) return;
+  const body = new URLSearchParams();
+  body.set("entry." + done.dataset.entry, document.getElementById("out").value);
+  if (send) { send.disabled = true; send.textContent = "Sending..."; }
+  try {
+    await fetch(
+      "https://docs.google.com/forms/d/e/" + done.dataset.form + "/formResponse",
+      { method: "POST", mode: "no-cors", body }
+    );
+    if (send) send.textContent = "Answers sent";
+    const sent = document.getElementById("sent");
+    if (sent) sent.textContent = "✓ sent automatically";
+  } catch (error) {
+    if (send) { send.disabled = false; send.textContent = "Send my answers"; }
+    const sent = document.getElementById("sent");
+    if (sent) sent.textContent = "could not send - please use the form link below";
+  }
 }
+const send = document.getElementById("send");
+if (send) send.addEventListener("click", postAnswers);
 </script>
 </body>
 </html>
