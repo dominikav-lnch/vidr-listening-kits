@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Choosing a narrator — English</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%F0%9F%8E%AC%3C/text%3E%3C/svg%3E">
+<style>
+:root { color-scheme: light dark; --line: #cfcabd; --ink: #23231f; --paper: #fbf9f4; --accent: #a85f36; --dim: #6d6a60; --ok: #2f7d4f; }
+@media (prefers-color-scheme: dark) {
+  :root { --line: #49473f; --ink: #eee9df; --paper: #1c1c19; --dim: #a29d92; --accent: #e59462; --ok: #6fc08e; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink);
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; line-height: 1.55; }
+main { max-width: 780px; margin: 0 auto; padding: 26px 20px 90px; }
+h1 { font-size: 23px; margin: 0 0 6px; line-height: 1.25; }
+h3 { margin: 0 0 12px; font-size: 17px; }
+.intro { border: 1px solid var(--line); border-radius: 10px; padding: 15px 17px; margin-bottom: 22px; }
+.intro ol { margin: 8px 0 0; padding-left: 20px; }
+.intro li { margin-bottom: 5px; }
+.clip { border: 1px solid var(--line); border-radius: 10px; padding: 15px 17px; margin-bottom: 18px; }
+video { width: 100%; border-radius: 8px; background: #000; display: block; margin-bottom: 6px; }
+.state { font-size: 13px; color: var(--dim); margin: 0 0 12px; }
+.state.done { color: var(--ok); font-weight: 600; }
+fieldset { border: 0; padding: 0; margin: 0; }
+fieldset[disabled] { opacity: .38; }
+label { display: block; font-size: 14px; margin-bottom: 13px; }
+label b { font-weight: 600; }
+select, textarea, input[type=text] { display: block; width: 100%; margin-top: 4px; padding: 8px 9px;
+  border: 1px solid var(--line); border-radius: 7px; background: transparent; color: inherit;
+  font: inherit; font-size: 14px; }
+textarea { resize: vertical; }
+button { background: var(--accent); color: #fff; border: 0; border-radius: 8px;
+  padding: 11px 18px; font: inherit; font-weight: 600; cursor: pointer; }
+button:hover { filter: brightness(1.08); }
+button[disabled] { opacity: .45; cursor: not-allowed; filter: none; }
+#out { width: 100%; min-height: 130px; margin-top: 14px; font-family: Consolas, monospace;
+  font-size: 12px; display: none; }
+.note { font-size: 13px; color: var(--dim); }
+.aside { font-size: 13px; color: var(--dim); margin: -8px 0 13px; }
+.scale { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+.scale input[type=range] { flex: 1; margin: 0; accent-color: var(--accent); }
+.scale output { min-width: 26px; text-align: center; font-weight: 700; font-size: 15px; }
+.ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--dim); margin-top: 3px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Which narrator would you keep for a whole film?</h1>
+  <p class="note">English · about 14 minutes · please use headphones</p>
+
+  <div class="intro"><strong>What this is.</strong> You will watch <b>5 short clips</b> from a historical documentary in English. The picture, the music and the words are identical in all of them - <b>only the narrator changes</b>. We are choosing who will read our full-length films in English.<ol><li>Watch each clip <em>to the end</em>. The questions unlock when it finishes.</li><li>Answer for that clip, then move to the next one.</li><li>At the end, compare them.</li></ol><p class="note" style="margin-bottom:0">The narrator has to sound genuinely native, and has to be bearable for a whole hour. There is no answer we are hoping for - telling us a voice is bad is exactly as useful as telling us it is good.</p></div>
+
+  <form id="form">
+
+    <section class="clip">
+      <h3>Before we start</h3>
+      <label><b>Where did you grow up?</b> One sentence, written in English.
+        <textarea data-q="origin" rows="2"></textarea>
+      </label>
+      <p class="aside">We ask in English because only a native speaker can judge how these
+        recordings sound. Nothing you write here identifies you.</p>
+    </section>
+
+    <section class="clip"><h3>Narrator A</h3><video data-clip="A" controls preload="metadata" playsinline src="clips/clip-A.mp4"></video><p class="state" data-clip="A">Watch it to the end - the questions unlock when it finishes.</p><fieldset data-clip="A" disabled><label><b>Does the narrator sound like a native speaker of English?</b><div class="scale"><input type="range" data-q="native" data-clip="A" min="1" max="10" step="1" value="5"><output>—</output></div><div class="ends"><span>1 — clearly a foreign accent</span><span>10 — clearly a native speaker</span></div></label><label><b>Human or machine?</b><div class="scale"><input type="range" data-q="human" data-clip="A" min="1" max="10" step="1" value="5"><output>—</output></div><div class="ends"><span>1 — robotic</span><span>10 — a person reading</span></div></label><label><b>You put this film on in the evening. What happens?</b><select data-q="evening" data-clip="A"><option value=''>—</option><option value='calm'>I fall asleep — the voice is calming</option><option value='bored'>I fall asleep — the voice is boring</option><option value='hooked'>I stay awake — the voice pulls me in</option><option value='irritated'>I stay awake — the voice irritates or tires me</option><option value='neutral'>Neither — it just runs in the background</option></select></label><label><b>Could you listen to this narrator for a whole hour?</b><select data-q="hour" data-clip="A"><option value=''>—</option><option value='yes'>Yes — I would not think about the voice</option><option value='effort'>Yes, but it would take some effort</option><option value='no'>No — I would stop or switch it off</option></select></label><label><b>Now imagine this voice for 60 minutes. What would start to bother you first?</b> If nothing would, say so.<textarea data-q="fatigue" data-clip="A" rows="2"></textarea></label><label><b>The pace of this reading is</b><select data-q="pace" data-clip="A"><option value=''>—</option><option value='fast'>Too fast</option><option value='ok'>About right</option><option value='slow'>Too slow</option></select></label></fieldset></section>
+<section class="clip"><h3>Narrator B</h3><video data-clip="B" controls preload="metadata" playsinline src="clips/clip-B.mp4"></video><p class="state" data-clip="B">Watch it to the end - the questions unlock when it finishes.</p><fieldset data-clip="B" disabled><label><b>Does the narrator sound like a native speaker of English?</b><div class="scale"><input type="range" data-q="native" data-clip="B" min="1" max="10" step="1" value="5"><output>—</output></div><div class="ends"><span>1 — clearly a foreign accent</span><span>10 — clearly a native speaker</span></div></label><label><b>Human or machine?</b><div class="scale"><input type="range" data-q="human" data-clip="B" min="1" max="10" step="1" value="5"><output>—</output></div><div class="ends"><span>1 — robotic</span><span>10 — a person reading</span></div></label><label><b>You put this film on in the evening. What happens?</b><select data-q="evening" data-clip="B"><option value=''>—</option><option value='calm'>I fall asleep — the voice is calming</option><option value='bored'>I fall asleep — the voice is boring</option><option value='hooked'>I stay awake — the voice pulls me in</option><option value='irritated'>I stay awake — the voice irritates or tires me</option><option value='neutral'>Neither — it just runs in the background</option></select></label><label><b>Could you listen to this narrator for a whole hour?</b><select data-q="hour" data-clip="B"><option value=''>—</option><option value='yes'>Yes — I would not think about the voice</option><option value='effort'>Yes, but it would take some effort</option><option value='no'>No — I would stop or switch it off</option></select></label><label><b>Now imagine this voice for 60 minutes. What would start to bother you first?</b> If nothing would, say so.<textarea data-q="fatigue" data-clip="B" rows="2"></textarea></label><label><b>The pace of this reading is</b><select data-q="pace" data-clip="B"><option value=''>—</option><option value='fast'>Too fast</option><option value='ok'>About right</option><option value='slow'>Too slow</option></select></label></fieldset></section>
+<section class="clip"><h3>Narrator C</h3><video data-clip="C" controls preload="metadata" playsinline src="clips/clip-C.mp4"></video><p class="state" data-clip="C">Watch it to the end - the questions unlock when it finishes.</p><fieldset data-clip="C" disabled><label><b>Does the narrator sound like a native speaker of English?</b><div class="scale"><input type="range" data-q="native" data-clip="C" min="1" max="10" step="1" value="5"><output>—</output></div><div class="ends"><span>1 — clearly a foreign accent</span><span>10 — clearly a native speaker</span></div></label><label><b>Human or machine?</b><div class="scale"><input type="range" data-q="human" data-clip="C" min="1" max="10" step="1" value="5"><output>—</output></div><div class="ends"><span>1 — robotic</span><span>10 — a person reading</span></div></label><label><b>You put this film on in the evening. What happens?</b><select data-q="evening" data-clip="C"><option value=''>—</option><option value='calm'>I fall asleep — the voice is calming</option><option value='bored'>I fall asleep — the voice is boring</option><option value='hooked'>I stay awake — the voice pulls me in</option><option value='irritated'>I stay awake — the voice irritates or tires me</option><option value='neutral'>Neither — it just runs in the background</option></select></label><label><b>Could you listen to this narrator for a whole hour?</b><select data-q="hour" data-clip="C"><option value=''>—</option><option value='yes'>Yes — I would not think about the voice</option><option value='effort'>Yes, but it would take some effort</option><option value='no'>No — I would stop or switch it off</option></select></label><label><b>Now imagine this voice for 60 minutes. What would start to bother you first?</b> If nothing would, say so.<textarea data-q="fatigue" data-clip="C" rows="2"></textarea></label><label><b>The pace of this reading is</b><select data-q="pace" data-clip="C"><option value=''>—</option><option value='fast'>Too fast</option><option value='ok'>About right</option><option value='slow'>Too slow</option></select></label></fieldset></section>
+<section class="clip"><h3>Narrator D</h3><video data-clip="D" controls preload="metadata" playsinline src="clips/clip-D.mp4"></video><p class="state" data-clip="D">Watch it to the end - the questions unlock when it finishes.</p><fieldset data-clip="D" disabled><label><b>Does the narrator sound like a native speaker of English?</b><div class="scale"><input type="range" data-q="native" data-clip="D" min="1" max="10" step="1" value="5"><output>—</output></div><div class="ends"><span>1 — clearly a foreign accent</span><span>10 — clearly a native speaker</span></div></label><label><b>Human or machine?</b><div class="scale"><input type="range" data-q="human" data-clip="D" min="1" max="10" step="1" value="5"><output>—</output></div><div class="ends"><span>1 — robotic</span><span>10 — a person reading</span></div></label><label><b>You put this film on in the evening. What happens?</b><select data-q="evening" data-clip="D"><option value=''>—</option><option value='calm'>I fall asleep — the voice is calming</option><option value='bored'>I fall asleep — the voice is boring</option><option value='hooked'>I stay awake — the voice pulls me in</option><option value='irritated'>I stay awake — the voice irritates or tires me</option><option value='neutral'>Neither — it just runs in the background</option></select></label><label><b>Could you listen to this narrator for a whole hour?</b><select data-q="hour" data-clip="D"><option value=''>—</option><option value='yes'>Yes — I would not think about the voice</option><option value='effort'>Yes, but it would take some effort</option><option value='no'>No — I would stop or switch it off</option></select></label><label><b>Now imagine this voice for 60 minutes. What would start to bother you first?</b> If nothing would, say so.<textarea data-q="fatigue" data-clip="D" rows="2"></textarea></label><label><b>The pace of this reading is</b><select data-q="pace" data-clip="D"><option value=''>—</option><option value='fast'>Too fast</option><option value='ok'>About right</option><option value='slow'>Too slow</option></select></label></fieldset></section>
+<section class="clip"><h3>Narrator E</h3><video data-clip="E" controls preload="metadata" playsinline src="clips/clip-E.mp4"></video><p class="state" data-clip="E">Watch it to the end - the questions unlock when it finishes.</p><fieldset data-clip="E" disabled><label><b>Does the narrator sound like a native speaker of English?</b><div class="scale"><input type="range" data-q="native" data-clip="E" min="1" max="10" step="1" value="5"><output>—</output></div><div class="ends"><span>1 — clearly a foreign accent</span><span>10 — clearly a native speaker</span></div></label><label><b>Human or machine?</b><div class="scale"><input type="range" data-q="human" data-clip="E" min="1" max="10" step="1" value="5"><output>—</output></div><div class="ends"><span>1 — robotic</span><span>10 — a person reading</span></div></label><label><b>You put this film on in the evening. What happens?</b><select data-q="evening" data-clip="E"><option value=''>—</option><option value='calm'>I fall asleep — the voice is calming</option><option value='bored'>I fall asleep — the voice is boring</option><option value='hooked'>I stay awake — the voice pulls me in</option><option value='irritated'>I stay awake — the voice irritates or tires me</option><option value='neutral'>Neither — it just runs in the background</option></select></label><label><b>Could you listen to this narrator for a whole hour?</b><select data-q="hour" data-clip="E"><option value=''>—</option><option value='yes'>Yes — I would not think about the voice</option><option value='effort'>Yes, but it would take some effort</option><option value='no'>No — I would stop or switch it off</option></select></label><label><b>Now imagine this voice for 60 minutes. What would start to bother you first?</b> If nothing would, say so.<textarea data-q="fatigue" data-clip="E" rows="2"></textarea></label><label><b>The pace of this reading is</b><select data-q="pace" data-clip="E"><option value=''>—</option><option value='fast'>Too fast</option><option value='ok'>About right</option><option value='slow'>Too slow</option></select></label></fieldset></section>
+
+    <section class="clip">
+      <h3>Now compare them</h3>
+      <label><b>Which narrator would you keep for the whole film?</b>
+        <select data-q="keep"><option value="">—</option><option value='A'>Narrator A</option><option value='B'>Narrator B</option><option value='C'>Narrator C</option><option value='D'>Narrator D</option><option value='E'>Narrator E</option></select>
+      </label>
+      <label><b>Which one would you drop first?</b>
+        <select data-q="drop"><option value="">—</option><option value='A'>Narrator A</option><option value='B'>Narrator B</option><option value='C'>Narrator C</option><option value='D'>Narrator D</option><option value='E'>Narrator E</option></select>
+      </label>
+      <label><b>If your first choice were unavailable, who would you take instead?</b>
+        <select data-q="second"><option value="">—</option><option value='A'>Narrator A</option><option value='B'>Narrator B</option><option value='C'>Narrator C</option><option value='D'>Narrator D</option><option value='E'>Narrator E</option></select>
+      </label>
+      <label><b>Did any of them sound like the reader was <em>not</em> a native speaker of
+        English?</b> Which one, and what gave it away?
+        <textarea data-q="foreign" rows="2"></textarea>
+      </label>
+      <label><b>Was any word, name or date pronounced wrongly?</b> Which clip, and what was it?
+        <textarea data-q="errors" rows="2"></textarea>
+      </label>
+      <label><b>In one sentence, what were the recordings about?</b>
+        <input type="text" data-q="recall" placeholder="">
+      </label>
+    </section>
+
+    <section class="clip">
+      <h3>One last thing, about you — not about the voices</h3>
+      <label><b>Do you watch historical documentaries yourself?</b>
+        <select data-q="genre">
+          <option value="">—</option>
+          <option value="often">Often</option>
+          <option value="sometimes">Sometimes</option>
+          <option value="rarely">Rarely</option>
+          <option value="never">Never — not my kind of film</option>
+        </select>
+      </label>
+      <p class="aside">Answer honestly. "I would not watch this kind of film" is a perfectly good
+        answer and does not count against any of the narrators — we separate the two on purpose.</p>
+      <label>Anything else we should know?
+        <textarea data-q="notes" rows="2"></textarea>
+      </label>
+    </section>
+
+    <button type="button" id="go">Generate my answers</button>
+    <textarea id="out" readonly></textarea>
+    <section class="clip" id="done" style="display:none" data-form="1FAIpQLSdJLdxf5XM8yp9iDj096FrxSLCx39M026_XEwC6uMfrkitkNA" data-entry="997611096"><h3>Two last steps</h3><p><b>1.</b> Send us your answers.</p><p><button type="button" id="send">Send my answers</button><span id="sent" style="margin-left:10px"></span></p><p class="note">Not working? Paste the text above into <a href="https://docs.google.com/forms/d/e/1FAIpQLSdJLdxf5XM8yp9iDj096FrxSLCx39M026_XEwC6uMfrkitkNA/viewform" target="_blank" rel="noreferrer">this form</a> instead.</p><p><b>2.</b> Then register your submission so you get paid.</p><p>Your completion code: <b>VIDRENG04</b></p><p><a href="https://app.prolific.com/submissions/complete?cc=VIDRENG04"><button type="button">Finish on Prolific</button></a></p></section>
+  </form>
+</main>
+
+<script>
+const OPENED_AT = Date.now();
+
+// A slider only counts once the participant actually touches it - tap, drag or
+// keyboard all count - and its value becomes visible at that moment. Without
+// this, every untouched slider would silently report its starting position.
+for (const slider of document.querySelectorAll('input[type=range][data-q]')) {
+  const out = slider.closest(".scale")?.querySelector("output");
+  const mark = () => {
+    slider.dataset.touched = "1";
+    if (out) out.textContent = slider.value;
+  };
+  slider.addEventListener("input", mark);
+  slider.addEventListener("pointerdown", mark);
+  slider.addEventListener("keydown", mark);
+}
+
+// Scoring a clip you did not finish is worse than not scoring it, so the questions
+// stay locked until the video actually reaches its end, and how long it was really
+// watched travels with the answers.
+const watched = {};
+for (const video of document.querySelectorAll("video")) {
+  const clip = video.dataset.clip;
+  watched[clip] = { seconds: 0, replays: 0, finished: false };
+  const fields = document.querySelector(`fieldset[data-clip="${clip}"]`);
+  const state = document.querySelector(`.state[data-clip="${clip}"]`);
+  let last = 0;
+  video.addEventListener("timeupdate", () => {
+    const now = video.currentTime;
+    if (now > last) watched[clip].seconds += now - last;
+    last = now;
+  });
+  video.addEventListener("seeking", () => { last = video.currentTime; });
+  video.addEventListener("play", () => {
+    if (watched[clip].finished) watched[clip].replays += 1;
+  });
+  video.addEventListener("ended", () => {
+    watched[clip].finished = true;
+    fields.disabled = false;
+    state.textContent = "Watched — you can score it now.";
+    state.classList.add("done");
+  });
+}
+
+document.getElementById("go").addEventListener("click", () => {
+  const params = new URLSearchParams(location.search);
+  const answers = {
+    schema: "vidr-video-listener/v1",
+    language: "eng",
+    kit: "eng-contract-134-197",
+    participant: params.get("PROLIFIC_PID") || null,
+    study: params.get("STUDY_ID") || null,
+    session: params.get("SESSION_ID") || null,
+    minutes_on_page: null,
+    clips: {}, overall: {}, watched: {}
+  };
+  for (const el of document.querySelectorAll("[data-q]")) {
+    const clip = el.dataset.clip;
+    // A range input always reports a number even when nobody touched it, and an
+    // untouched slider is a non-answer that must fail validation, not a middle.
+    const value = (el.type === "range" && !el.dataset.touched) ? "" : el.value;
+    if (clip) {
+      answers.clips[clip] = answers.clips[clip] || {};
+      answers.clips[clip][el.dataset.q] = value;
+    } else {
+      answers.overall[el.dataset.q] = value;
+    }
+  }
+  for (const [clip, row] of Object.entries(watched)) {
+    answers.watched[clip] = {
+      seconds: Math.round(row.seconds), replays: row.replays, finished: row.finished
+    };
+  }
+  answers.minutes_on_page = Math.round((Date.now() - OPENED_AT) / 6000) / 10;
+
+  const missing = [];
+  for (const [clip, row] of Object.entries(answers.clips)) {
+    if (!watched[clip].finished) missing.push(`clip ${clip}: watch it to the end`);
+    // "fatigue" is deliberately not required: it is the one open question whose
+    // value comes from being volunteered, and forcing it would fill the column
+    // with "nothing" typed to get past the button.
+    for (const key of ["native", "human", "evening", "hour", "pace"]) {
+      if (!row[key]) missing.push(`clip ${clip}: one question is still empty`);
+    }
+  }
+  for (const [key, human] of [["origin", "where you grew up"], ["keep", "which narrator you keep"],
+      ["drop", "which one you would drop first"], ["second", "your second choice"],
+      ["recall", "what the recordings were about"],
+      ["genre", "whether you watch documentaries"]]) {
+    if (!answers.overall[key]) missing.push(human);
+  }
+  if (answers.overall.keep && answers.overall.keep === answers.overall.drop) {
+    missing.push("the narrator you keep cannot also be the one you drop");
+  }
+  if (answers.overall.second && answers.overall.second === answers.overall.keep) {
+    missing.push("your second choice cannot be the narrator you already kept");
+  }
+
+  const out = document.getElementById("out");
+  out.style.display = "block";
+  if (missing.length) {
+    out.value = "Please finish these first:\n- " + [...new Set(missing)].join("\n- ");
+    out.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  out.value = JSON.stringify(answers, null, 2);
+  const done = document.getElementById("done");
+  if (done) done.style.display = "block";
+  out.select();
+  out.scrollIntoView({ behavior: "smooth", block: "center" });
+  // Fire the submission the moment valid answers exist. In the first live run
+  // one participant of ten took the completion code without pressing send and
+  // their answers died with the tab - a manual send after payment is a step
+  // nobody is motivated to take. The button stays as a visible retry.
+  postAnswers();
+});
+
+// Post the sheet ourselves. The response is opaque by design, so the manual paste
+// route stays on the page as the fallback.
+async function postAnswers() {
+  const done = document.getElementById("done");
+  const send = document.getElementById("send");
+  if (!done || !done.dataset.form) return;
+  const body = new URLSearchParams();
+  body.set("entry." + done.dataset.entry, document.getElementById("out").value);
+  if (send) { send.disabled = true; send.textContent = "Sending..."; }
+  try {
+    await fetch(
+      "https://docs.google.com/forms/d/e/" + done.dataset.form + "/formResponse",
+      { method: "POST", mode: "no-cors", body }
+    );
+    if (send) send.textContent = "Answers sent";
+    const sent = document.getElementById("sent");
+    if (sent) sent.textContent = "✓ sent automatically";
+  } catch (error) {
+    if (send) { send.disabled = false; send.textContent = "Send my answers"; }
+    const sent = document.getElementById("sent");
+    if (sent) sent.textContent = "could not send - please use the form link below";
+  }
+}
+const send = document.getElementById("send");
+if (send) send.addEventListener("click", postAnswers);
+</script>
+</body>
+</html>
