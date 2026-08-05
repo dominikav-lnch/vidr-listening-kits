@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>日本語ナレーション比較</title>
+<style>
+:root { color-scheme: light dark; --paper:#fbfaf6; --ink:#25241f; --line:#d5d0c5; --dim:#6c685f; --accent:#9f5637; --ok:#2d7a4b; }
+@media (prefers-color-scheme:dark) { :root { --paper:#1b1b18; --ink:#eeeae1; --line:#4a4740; --dim:#aaa49a; --accent:#df855e; --ok:#68be88; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif; line-height:1.65; }
+main { max-width:780px; margin:0 auto; padding:26px 18px 90px; }
+h1 { font-size:24px; line-height:1.35; margin:0 0 5px; }
+h2 { font-size:18px; margin:0 0 12px; }
+.card { border:1px solid var(--line); border-radius:11px; padding:16px 17px; margin:0 0 18px; }
+.note,.state { color:var(--dim); font-size:13px; }
+.state.done { color:var(--ok); font-weight:700; }
+ol { padding-left:1.4em; margin-bottom:0; }
+audio { width:100%; margin:2px 0 5px; }
+fieldset { border:0; margin:0; padding:0; }
+fieldset[disabled] { opacity:.38; }
+label { display:block; margin:0 0 14px; font-size:14px; }
+label b { font-weight:700; }
+select,textarea,input[type=text] { display:block; width:100%; margin-top:5px; padding:9px; border:1px solid var(--line); border-radius:7px; background:transparent; color:inherit; font:inherit; }
+textarea { resize:vertical; }
+.scale { display:flex; align-items:center; gap:11px; margin-top:6px; }
+.scale input { flex:1; accent-color:var(--accent); }
+.scale output { width:2em; text-align:center; font-weight:700; }
+.ends { display:flex; justify-content:space-between; gap:10px; color:var(--dim); font-size:12px; }
+button { border:0; border-radius:8px; padding:11px 17px; background:var(--accent); color:white; font:inherit; font-weight:700; cursor:pointer; }
+button[disabled] { opacity:.45; cursor:not-allowed; }
+#out { display:none; min-height:150px; font-family:Consolas,monospace; font-size:11px; }
+#error { white-space:pre-line; color:#b23b32; font-weight:700; }
+</style>
+</head>
+<body>
+<main>
+  <h1>日本語ドキュメンタリー・ナレーション比較</h1>
+  <p class="note">所要時間：約15分・音声6本（各75〜90秒）・ヘッドホン推奨</p>
+
+  <section class="card">
+    <h2>ご協力のお願い</h2>
+    <p>8人の異なる男性ナレーター候補が、同じ日本語原稿を読んでいます。内容は同一です。長編ドキュメンタリーの語り手として、声の自然さ、発音、聴き心地を比べてください。</p>
+    <ol>
+      <li>各音声を最後まで聴くと、その音声の質問が開きます。</li>
+      <li>聞き慣れてしまう影響を減らすため、順番は参加者ごとに変わります。</li>
+      <li>不自然・機械的・誤読だと感じた場合も、遠慮なくそのまま回答してください。</li>
+    </ol>
+  </section>
+
+  <form id="study-form">
+    <section class="card">
+      <h2>開始前</h2>
+      <label><b>どこで育ち、普段どの地域の日本語を話しますか。</b> 日本語で一文書いてください。
+        <textarea data-q="origin" rows="2"></textarea>
+      </label>
+      <label><b>今日は何で聴きますか。</b>
+        <select data-q="listening_device"><option value="">選択してください</option><option value="headphones">ヘッドホン／イヤホン</option><option value="speakers">スピーカー</option></select>
+      </label>
+    </section>
+
+    <div id="clips"></div>
+
+    <section class="card">
+      <h2>8本を比べてください</h2>
+      <label><b>長編ドキュメンタリーに採用するなら、最も良いものはどれですか。</b><select data-q="best" class="sample-select"></select></label>
+      <label><b>次点はどれですか。</b><select data-q="second" class="sample-select"></select></label>
+      <label><b>最初に外すならどれですか。</b><select data-q="worst" class="sample-select"></select></label>
+      <label><b>8本の中で、明らかな誤読・アクセント違いがあったものを教えてください。</b> 「音声Cの『知性』」のように書いてください。なければ「なし」。
+        <textarea data-q="overall_errors" rows="3"></textarea>
+      </label>
+      <label><b>原稿は何について話していましたか。</b> 内容確認のため、日本語で一文書いてください。
+        <input data-q="recall" type="text">
+      </label>
+      <label>ほかに気づいた違いがあれば自由に書いてください。
+        <textarea data-q="notes" rows="2"></textarea>
+      </label>
+    </section>
+
+    <p id="error"></p>
+    <button type="button" id="go">回答を送信する</button>
+    <textarea id="out" readonly></textarea>
+    <section class="card" id="done" style="display:none" data-form="1FAIpQLSdJLdxf5XM8yp9iDj096FrxSLCx39M026_XEwC6uMfrkitkNA" data-entry="997611096">
+      <h2>回答データを送信しています</h2>
+      <p id="sent">この画面を閉じずにお待ちください…</p>
+      <p><button type="button" id="resend" style="display:none">回答データを再送信する</button></p>
+      <div id="completion" style="display:none">
+        <p>送信処理が完了しました。最後にProlificへ戻り、完了を登録してください。</p>
+        <p>完了コード：<b>VIDRJA04</b></p>
+        <p><a href="https://app.prolific.com/submissions/complete?cc=VIDRJA04"><button type="button">Prolificで完了する</button></a></p>
+      </div>
+      <p class="note">送信に問題がある場合は、上の回答データを<a href="https://docs.google.com/forms/d/e/1FAIpQLSdJLdxf5XM8yp9iDj096FrxSLCx39M026_XEwC6uMfrkitkNA/viewform" target="_blank" rel="noreferrer">こちらのフォーム</a>に貼り付けてください。</p>
+    </section>
+  </form>
+</main>
+
+<template id="clip-template">
+  <section class="card clip-card">
+    <h2 class="clip-title"></h2>
+    <audio controls preload="metadata" playsinline></audio>
+    <p class="state">最後まで聴くと質問が開きます。</p>
+    <fieldset disabled>
+      <label><b>総合的にどのくらい自然な日本語ナレーションですか。</b>
+        <div class="scale"><input type="range" data-q="natural" min="1" max="10" value="5"><output>—</output></div>
+        <div class="ends"><span>1 不自然</span><span>10 とても自然</span></div>
+      </label>
+      <label><b>日本語母語話者の読み方に聞こえますか。</b>
+        <div class="scale"><input type="range" data-q="native" min="1" max="10" value="5"><output>—</output></div>
+        <div class="ends"><span>1 明らかに非母語的</span><span>10 完全に母語的</span></div>
+      </label>
+      <label><b>人間らしさはどの程度ですか。</b>
+        <div class="scale"><input type="range" data-q="human" min="1" max="10" value="5"><output>—</output></div>
+        <div class="ends"><span>1 機械的</span><span>10 人間の朗読</span></div>
+      </label>
+      <label><b>読む速さはどうですか。</b>
+        <select data-q="pace"><option value="">選択してください</option><option value="fast">速すぎる</option><option value="ok">ちょうどよい</option><option value="slow">遅すぎる</option></select>
+      </label>
+      <label><b>この声を60分聴き続けられますか。</b>
+        <select data-q="hour"><option value="">選択してください</option><option value="yes">はい、気にならない</option><option value="effort">聴けるが、少し疲れる</option><option value="no">いいえ、途中で止めたい</option></select>
+      </label>
+      <label><b>誤読、アクセント違い、または不自然な区切りはありましたか。</b> 単語やおおよその時刻を書いてください。なければ「なし」。
+        <textarea data-q="errors" rows="2"></textarea>
+      </label>
+    </fieldset>
+  </section>
+</template>
+
+<script>
+const OPENED_AT = Date.now();
+const SAMPLE_IDS = ["s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08"];
+const params = new URLSearchParams(location.search);
+const participant = params.get("PROLIFIC_PID") || "preview-" + Math.random();
+
+function hash32(text) {
+  let h = 2166136261;
+  for (let i = 0; i < text.length; i += 1) { h ^= text.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function seeded(seed) {
+  return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+}
+function shuffle(values, rand) {
+  const out = [...values];
+  for (let i = out.length - 1; i > 0; i -= 1) { const j = Math.floor(rand() * (i + 1)); [out[i], out[j]] = [out[j], out[i]]; }
+  return out;
+}
+
+const order = shuffle(SAMPLE_IDS, seeded(hash32(participant + "|vidr-ja04")));
+const letters = ["A", "B", "C", "D", "E", "F", "G", "H"];
+const labelToSample = {};
+const watched = {};
+const clips = document.getElementById("clips");
+
+order.forEach((sample, index) => {
+  const label = letters[index];
+  labelToSample[label] = sample;
+  watched[label] = { seconds:0, duration:0, finished:false, replays:0 };
+  const node = document.getElementById("clip-template").content.cloneNode(true);
+  const card = node.querySelector(".clip-card");
+  const audio = node.querySelector("audio");
+  const fieldset = node.querySelector("fieldset");
+  const state = node.querySelector(".state");
+  node.querySelector(".clip-title").textContent = "音声" + label;
+  audio.src = "clips/" + sample + ".mp3";
+  audio.dataset.clip = label;
+  fieldset.dataset.clip = label;
+  for (const el of fieldset.querySelectorAll("[data-q]")) el.dataset.clip = label;
+  let last = 0;
+  audio.addEventListener("loadedmetadata", () => { watched[label].duration = Math.round(audio.duration * 10) / 10; });
+  audio.addEventListener("timeupdate", () => { const now = audio.currentTime; if (now > last && now - last < 1.5) watched[label].seconds += now - last; last = now; });
+  audio.addEventListener("seeking", () => { last = audio.currentTime; });
+  audio.addEventListener("play", () => { if (watched[label].finished) watched[label].replays += 1; });
+  audio.addEventListener("ended", () => { watched[label].finished = true; fieldset.disabled = false; state.textContent = "再生完了。回答できます。"; state.classList.add("done"); });
+  clips.appendChild(node);
+});
+
+for (const select of document.querySelectorAll(".sample-select")) {
+  select.innerHTML = '<option value="">選択してください</option>' + letters.map(x => `<option value="${x}">音声${x}</option>`).join("");
+}
+for (const slider of document.querySelectorAll('input[type="range"]')) {
+  const output = slider.closest(".scale").querySelector("output");
+  const mark = () => { slider.dataset.touched = "1"; output.textContent = slider.value; };
+  slider.addEventListener("input", mark); slider.addEventListener("pointerdown", mark); slider.addEventListener("keydown", mark);
+}
+
+function collect() {
+  const answer = {
+    schema:"vidr-ja-cast8-listener/v1", kit:"ja-cast8", language:"ja",
+    response_id:["vidr-ja04", params.get("PROLIFIC_PID"), params.get("STUDY_ID"), params.get("SESSION_ID")].join("|"),
+    participant:params.get("PROLIFIC_PID") || null, study:params.get("STUDY_ID") || null,
+    session:params.get("SESSION_ID") || null, order:[...order], label_to_sample:{...labelToSample},
+    minutes_on_page:Math.round((Date.now() - OPENED_AT) / 6000) / 10, clips:{}, overall:{}, watched:{}
+  };
+  for (const el of document.querySelectorAll("[data-q]")) {
+    const value = el.type === "range" && !el.dataset.touched ? "" : el.value.trim();
+    if (el.dataset.clip) { answer.clips[el.dataset.clip] ||= { sample:labelToSample[el.dataset.clip] }; answer.clips[el.dataset.clip][el.dataset.q] = value; }
+    else answer.overall[el.dataset.q] = value;
+  }
+  for (const [label,row] of Object.entries(watched)) answer.watched[label] = { sample:labelToSample[label], seconds:Math.round(row.seconds), duration:row.duration, finished:row.finished, replays:row.replays };
+  return answer;
+}
+
+function validate(answer) {
+  const missing = [];
+  for (const label of letters) {
+    const row = answer.clips[label] || {};
+    const watch = answer.watched[label];
+    if (!watch.finished || (watch.duration && watch.seconds < watch.duration * 0.85)) missing.push(`音声${label}を最初から最後まで聴いてください`);
+    for (const key of ["natural","native","human","pace","hour","errors"]) if (!row[key]) missing.push(`音声${label}の質問に未回答があります`);
+  }
+  for (const key of ["origin","listening_device","best","second","worst","overall_errors","recall"]) if (!answer.overall[key]) missing.push("比較・参加者情報の質問に未回答があります");
+  const picks = [answer.overall.best, answer.overall.second, answer.overall.worst];
+  if (picks.every(Boolean) && new Set(picks).size !== 3) missing.push("1位・次点・外す音声は別々に選んでください");
+  return [...new Set(missing)];
+}
+
+async function postAnswers() {
+  const done = document.getElementById("done");
+  const resend = document.getElementById("resend");
+  const completion = document.getElementById("completion");
+  const body = new URLSearchParams();
+  body.set("entry." + done.dataset.entry, document.getElementById("out").value);
+  resend.disabled = true;
+  resend.style.display = "none";
+  completion.style.display = "none";
+  document.getElementById("sent").textContent = "送信中です。この画面を閉じずにお待ちください…";
+  try {
+    await fetch("https://docs.google.com/forms/d/e/" + done.dataset.form + "/formResponse", {method:"POST", mode:"no-cors", body});
+    document.getElementById("sent").textContent = "✓ 送信処理が完了しました。";
+    completion.style.display = "block";
+    resend.textContent = "必要な場合のみ、同じ回答を再送信する";
+    resend.style.display = "inline-block";
+    resend.disabled = false;
+  } catch (error) {
+    document.getElementById("sent").textContent = "自動送信できませんでした。下のフォームへ回答データを貼り付けてください。";
+    resend.textContent = "回答データを再送信する";
+    resend.style.display = "inline-block";
+    resend.disabled = false;
+  }
+}
+
+document.getElementById("resend").addEventListener("click", postAnswers);
+document.getElementById("go").addEventListener("click", async () => {
+  const answer = collect();
+  const missing = validate(answer);
+  const error = document.getElementById("error");
+  if (missing.length) { error.textContent = missing.map(x => "・" + x).join("\n"); error.scrollIntoView({behavior:"smooth",block:"center"}); return; }
+  error.textContent = "";
+  const out = document.getElementById("out");
+  out.value = JSON.stringify(answer, null, 2); out.style.display = "block";
+  document.getElementById("done").style.display = "block";
+  document.getElementById("go").disabled = true;
+  await postAnswers();
+  document.getElementById("done").scrollIntoView({behavior:"smooth",block:"start"});
+});
+</script>
+</body>
+</html>
