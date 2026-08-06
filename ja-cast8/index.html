@@ -144,6 +144,19 @@ for (const video of document.querySelectorAll("video")) {
   const fields = document.querySelector(`fieldset[data-clip="${clip}"]`);
   const state = document.querySelector(`.state[data-clip="${clip}"]`);
   let last = 0;
+  // Cheat guard (added after a dry run showed the seek bar can jump straight
+  // to the end and fire "ended"): the bar cannot move past what was actually
+  // watched - rewinding stays free - and fast playback does not count.
+  let maxPlayed = 0;
+  video.addEventListener("timeupdate", () => {
+    if (!video.seeking && video.currentTime > maxPlayed) maxPlayed = video.currentTime;
+  });
+  video.addEventListener("seeking", () => {
+    if (video.currentTime > maxPlayed + 1.5) video.currentTime = maxPlayed;
+  });
+  video.addEventListener("ratechange", () => {
+    if (video.playbackRate > 1.05) video.playbackRate = 1;
+  });
   video.addEventListener("timeupdate", () => {
     const now = video.currentTime;
     if (now > last) watched[clip].seconds += now - last;
