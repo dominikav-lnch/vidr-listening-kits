@@ -34,3 +34,7 @@ jobs:
           path: .
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          # a ~300 MB site takes longer than the action's default 10 min
+          # to propagate; give it half an hour before declaring failure
+          timeout: 1800000
