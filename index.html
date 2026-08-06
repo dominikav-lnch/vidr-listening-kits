@@ -37,11 +37,7 @@ a:hover { border-color: var(--accent); }
 </main>
 <script>
 const LANGS = {
-  ar: "Arabic", bg: "Bulgarian", cs: "Czech", da: "Danish", de: "German",
-  el: "Greek", es: "Spanish", fi: "Finnish", fr: "French", hi: "Hindi",
-  hr: "Croatian", hu: "Hungarian", it: "Italian", ja: "Japanese",
-  ko: "Korean", nl: "Dutch", pl: "Polish", pt: "Portuguese", ro: "Romanian",
-  ru: "Russian", sk: "Slovak", sv: "Swedish", tr: "Turkish", uk: "Ukrainian"
+  bg: "Bulgarian", de: "German", ro: "Romanian"
 };
 document.getElementById("langs").innerHTML = Object.entries(LANGS)
   .map(([code, name]) => `<li><a href="${code}/">${name}</a></li>`)
