@@ -1,0 +1,46 @@
+{
+ "schema": "vidr-contract-listener-key/v1",
+ "kit": "nl-engines-134-197",
+ "language": "nl",
+ "source_span_seconds": [
+  134.35,
+  196.61
+ ],
+ "engine_study": {
+  "voice_id": "gCJROUe9eMZaWlhNj1z0",
+  "voice_name": "Bart",
+  "engines": [
+   "eleven_v3",
+   "eleven_multilingual_v2"
+  ],
+  "note": "ten sam glos (Bart), IDENTYCZNY tekst (pelna translacja v2 wiersze 0-36) - klipy roznia sie WYLACZNIE silnikiem; Domi 2026-08-07: 'zbuduj tylko mv2 vs v3'"
+ },
+ "clips": [
+  {
+   "label": "A",
+   "file": "clips/clip-A.mp4",
+   "voice_id": "gCJROUe9eMZaWlhNj1z0",
+   "role": "candidate",
+   "engine": "eleven_v3",
+   "job": "_job-nl-frag-engv3",
+   "render": "D:\\_Projekty\\VidR-workspace\\Achievements\\_job-nl-frag-engv3\\nl-SLICE-MUSIC.mp4",
+   "out_start": 151.347,
+   "out_end": 226.166,
+   "seconds": 74.82,
+   "speed": 1.0
+  },
+  {
+   "label": "B",
+   "file": "clips/clip-B.mp4",
+   "voice_id": "gCJROUe9eMZaWlhNj1z0",
+   "role": "candidate",
+   "engine": "eleven_multilingual_v2",
+   "job": "_job-nl-frag-engmv2",
+   "render": "D:\\_Projekty\\VidR-workspace\\Achievements\\_job-nl-frag-engmv2\\nl-SLICE-MUSIC.mp4",
+   "out_start": 139.57,
+   "out_end": 206.714,
+   "seconds": 67.14,
+   "speed": 1.0
+  }
+ ]
+}
