@@ -13,7 +13,8 @@
    "eleven_v3",
    "eleven_multilingual_v2"
   ],
-  "note": "ten sam glos (Bart), IDENTYCZNY tekst (pelna translacja v2 wiersze 0-36) - klipy roznia sie WYLACZNIE silnikiem; Domi 2026-08-07: 'zbuduj tylko mv2 vs v3'"
+  "note": "ten sam glos (Bart), IDENTYCZNY tekst (pelna translacja v2 wiersze 0-36) - klipy roznia sie WYLACZNIE silnikiem; Domi 2026-08-07: 'zbuduj tylko mv2 vs v3'",
+  "v3_contract_steps": "klip A (v3) przeszedl dodatkowa warstwe de-breath (kandydat kontraktu nl-v3): detekcja widmowa wdechow niezalezna od progu poziomu (szum 0.8-4 kHz, mediana tonu zdarzenia <=0.40, 60-600 ms), tlumienie -14 dB; 87 wdechow stlumionych, szczyt z -6.9 na -9.3 dB wzgl. mowy; standardowy attenuate_gap_breaths nie widzial ich, bo wdech v3 przekracza prog mowy (SPEECH_FLOOR) i nie trafia do non_speech_gaps"
  },
  "clips": [
   {
