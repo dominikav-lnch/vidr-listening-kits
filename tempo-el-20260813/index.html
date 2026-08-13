@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="el" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Αξιολόγηση αφηγητή ντοκιμαντέρ</title>
+<style>
+body{font:16px/1.55 Segoe UI,Arial,sans-serif;max-width:760px;margin:auto;padding:24px;background:#faf8f3;color:#24231f}
+section{border:1px solid #cbc5b8;border-radius:12px;padding:18px;margin:18px 0;background:#fff}
+section.locked{opacity:.45;pointer-events:none}
+h1{font-size:1.45em}
+h2{font-size:1.15em;margin-top:0}
+audio{display:block;width:100%;margin:10px 0 16px}
+label{display:block;margin:14px 0 4px;font-weight:600}
+select,textarea{display:block;width:100%;padding:8px;border:1px solid #cbc5b8;border-radius:8px;font:inherit;background:#fff}
+.gate{font-weight:600;color:#8b4b2b;margin:6px 0}
+.gate.done{color:#2e6b34}
+.slider-row{display:flex;align-items:center;gap:14px}
+.slider-row input[type=range]{flex:1}
+.slider-val{min-width:2.2em;text-align:center;font-weight:700;font-size:1.2em}
+.slider-hint{font-weight:400;color:#6b6659;font-size:.9em;margin-top:2px}
+button{padding:11px 20px;border-radius:9px;border:1px solid #8b4b2b;background:#8b4b2b;color:#fff;font:inherit;font-weight:600;cursor:pointer}
+button:disabled{opacity:.4;cursor:default}
+fieldset{border:0;padding:0;margin:0}
+fieldset:disabled{opacity:.5}
+.choice-row{display:flex;gap:12px;margin-top:6px}
+.choice-row label{flex:1;border:2px solid #cbc5b8;border-radius:10px;padding:14px;text-align:center;cursor:pointer;font-weight:700;margin:0}
+.choice-row input{margin-inline-end:8px}
+.choice-row label.picked{border-color:#8b4b2b;background:#f6ece4}
+#koniec{display:none}
+.code{font-size:1.5em;font-weight:800;letter-spacing:.06em;background:#f0ede5;padding:10px 16px;border-radius:8px;display:inline-block}
+.err{color:#a33;font-weight:600;margin-top:10px;min-height:1.2em}
+</style>
+</head>
+<body>
+<h1>Αξιολόγηση αφηγητή ντοκιμαντέρ</h1>
+
+<form id="ankieta" autocomplete="off">
+
+<section id="s-intro">
+<h2>Πριν ξεκινήσετε</h2>
+<p>Θα ακούσετε <strong>δύο εκτελέσεις του ίδιου αποσπάσματος</strong> ενός ντοκιμαντέρ με μουσική, διαβασμένες από τον ίδιο αφηγητή στα ελληνικά (περίπου 2 λεπτά συνολικά). Οι εκτελέσεις μπορεί να διαφέρουν - κρίνετε την καθεμία ξεχωριστά. Ακούστε <strong>από την αρχή έως το τέλος</strong> - οι ερωτήσεις ξεκλειδώνουν μόνο όταν τελειώσει η ηχογράφηση. Δεν υπάρχουν σωστές ή λάθος απαντήσεις· μας ενδιαφέρει η εντύπωσή σας.</p>
+<label>Είναι τα ελληνικά η μητρική σας γλώσσα;
+<select data-q="first-language" required><option value=""></option><option>Ναι</option><option>Όχι</option></select></label>
+<label>Με τι ακούτε;
+<select data-q="gear" required><option value=""></option><option>Ακουστικά</option><option>Ενσωματωμένα ή εξωτερικά ηχεία</option></select></label>
+<p><button type="button" id="start">Έναρξη ακρόασης</button></p>
+<p class="err" id="err-intro"></p>
+</section>
+
+<section id="s-1" class="locked">
+<h2>Πρώτη ηχογράφηση</h2>
+<p class="gate" id="gate-1">Ακούστε ολόκληρη την ηχογράφηση για να ξεκλειδώσουν οι ερωτήσεις.</p>
+<audio id="au-1" controls controlslist="noplaybackrate nodownload" preload="metadata"></audio>
+<fieldset id="q-1" disabled>
+<label>Πώς κρίνετε τον ρυθμό της αφήγησης;
+<select data-q="tempo-1" required><option value=""></option><option>Σαφώς πολύ αργός</option><option>Λίγο αργός</option><option>Ακριβώς όπως πρέπει</option><option>Λίγο γρήγορος</option><option>Σαφώς πολύ γρήγορος</option></select></label>
+<label>Κρατά αυτός ο ρυθμός την προσοχή σας;
+<select data-q="uwaga-1" required><option value=""></option><option>Ναι, χωρίς προσπάθεια</option><option>Ναι, αλλά με κάποια προσπάθεια</option><option>Όχι</option></select></label>
+<label>Θα γινόταν αυτός ο ρυθμός κουραστικός μετά από μία ώρα;
+<select data-q="zmeczenie-1" required><option value=""></option><option>Όχι, θα μπορούσα να συνεχίσω να ακούω</option><option>Μάλλον όχι</option><option>Δύσκολο να πω</option><option>Μάλλον ναι</option><option>Ναι, θα σταματούσα να παρακολουθώ</option></select></label>
+<label>Πόσο εύκολα και άνετα ακούγεται αυτή η εκδοχή;
+<select data-q="komfort-1" required><option value=""></option><option>Πολύ εύκολα και άνετα</option><option>Αρκετά άνετα</option><option>Ουδέτερα</option><option>Με κάποια προσπάθεια</option><option>Πολύ δύσκολα</option></select></label>
+<label>Βλάπτει ο ρυθμός τη σαφήνεια, την προφορά ή τον ήχο κάποιας λέξης; Αν ναι, γράψτε τη λέξη και το κατά προσέγγιση σημείο. (προαιρετικό)
+<textarea data-q="bledy-1" rows="2"></textarea></label>
+<p><button type="button" id="dalej-1">Στη δεύτερη ηχογράφηση</button></p>
+<p class="err" id="err-1"></p>
+</fieldset>
+</section>
+
+<section id="s-2" class="locked">
+<h2>Δεύτερη ηχογράφηση</h2>
+<p class="gate" id="gate-2">Ακούστε ολόκληρη την ηχογράφηση για να ξεκλειδώσουν οι ερωτήσεις.</p>
+<audio id="au-2" controls controlslist="noplaybackrate nodownload" preload="metadata"></audio>
+<fieldset id="q-2" disabled>
+<label>Πώς κρίνετε τον ρυθμό της αφήγησης;
+<select data-q="tempo-2" required><option value=""></option><option>Σαφώς πολύ αργός</option><option>Λίγο αργός</option><option>Ακριβώς όπως πρέπει</option><option>Λίγο γρήγορος</option><option>Σαφώς πολύ γρήγορος</option></select></label>
+<label>Κρατά αυτός ο ρυθμός την προσοχή σας;
+<select data-q="uwaga-2" required><option value=""></option><option>Ναι, χωρίς προσπάθεια</option><option>Ναι, αλλά με κάποια προσπάθεια</option><option>Όχι</option></select></label>
+<label>Θα γινόταν αυτός ο ρυθμός κουραστικός μετά από μία ώρα;
+<select data-q="zmeczenie-2" required><option value=""></option><option>Όχι, θα μπορούσα να συνεχίσω να ακούω</option><option>Μάλλον όχι</option><option>Δύσκολο να πω</option><option>Μάλλον ναι</option><option>Ναι, θα σταματούσα να παρακολουθώ</option></select></label>
+<label>Πόσο εύκολα και άνετα ακούγεται αυτή η εκδοχή;
+<select data-q="komfort-2" required><option value=""></option><option>Πολύ εύκολα και άνετα</option><option>Αρκετά άνετα</option><option>Ουδέτερα</option><option>Με κάποια προσπάθεια</option><option>Πολύ δύσκολα</option></select></label>
+<label>Βλάπτει ο ρυθμός τη σαφήνεια, την προφορά ή τον ήχο κάποιας λέξης; Αν ναι, γράψτε τη λέξη και το κατά προσέγγιση σημείο. (προαιρετικό)
+<textarea data-q="bledy-2" rows="2"></textarea></label>
+<p><button type="button" id="dalej-2">Στις τελικές ερωτήσεις</button></p>
+<p class="err" id="err-2"></p>
+</fieldset>
+</section>
+
+<section id="s-final" class="locked">
+<h2>Τελικές ερωτήσεις</h2>
+<fieldset id="q-final" disabled>
+<label>Ποια εκτέλεση έχει τον καλύτερο ρυθμό για ένα ωριαίο ντοκιμαντέρ;</label>
+<div class="choice-row">
+<label id="pick-1"><input type="radio" name="wybor" value="first">Πρώτη ηχογράφηση</label>
+<label id="pick-2"><input type="radio" name="wybor" value="second">Δεύτερη ηχογράφηση</label>
+</div>
+<label>Τι κυρίως καθόρισε την επιλογή σας;
+<textarea data-q="powod" rows="3" required></textarea></label>
+<label>Με μία πρόταση: για τι μιλούσε το απόσπασμα;
+<textarea data-q="zapamietane" rows="2" required></textarea></label>
+<label>Πόσο σαν φυσικός ομιλητής των ελληνικών ακούγεται ο αφηγητής;
+<div class="slider-row"><input type="range" min="1" max="10" step="1" value="5" data-q="native" data-touched="0"><span class="slider-val" id="val-native">-</span></div>
+<div class="slider-hint">1 = σαφής ξένη προφορά, 10 = εκατό τοις εκατό φυσικός ομιλητής. Μετακινήστε τον δείκτη για να βαθμολογήσετε.</div></label>
+<label>Πόσο ακούγεται ο αφηγητής σαν αληθινός άνθρωπος και όχι σαν συνθεσάιζερ;
+<div class="slider-row"><input type="range" min="1" max="10" step="1" value="5" data-q="human" data-touched="0"><span class="slider-val" id="val-human">-</span></div>
+<div class="slider-hint">1 = σαφώς συνθετικός, 10 = δεν ξεχωρίζει από άνθρωπο. Μετακινήστε τον δείκτη για να βαθμολογήσετε.</div></label>
+<label>Υπάρχει κάτι άλλο που πρέπει να γνωρίζουμε; (προαιρετικό)
+<textarea data-q="uwagi-koncowe" rows="2"></textarea></label>
+<p><button type="button" id="wyslij">Υποβολή απαντήσεων</button></p>
+<p class="err" id="err-final"></p>
+</fieldset>
+</section>
+
+</form>
+
+<section id="koniec">
+<h2>Ευχαριστούμε!</h2>
+<p>Οι απαντήσεις σας αποθηκεύτηκαν.</p>
+<p>Κωδικός ολοκλήρωσης Prolific:</p>
+<p><span class="code">VIDR-TEMPO-EL</span></p>
+<p><a href="https://app.prolific.com/submissions/complete?cc=VIDR-TEMPO-EL"><button type="button">Prolific &rarr;</button></a></p>
+<textarea id="wynik" readonly hidden rows="14" style="width:100%;margin-top:14px"></textarea>
+</section>
+
+<script>
+(function(){
+"use strict";
+var LANG="el";
+var MSG={"gate_done": "Η ηχογράφηση ακούστηκε ολόκληρη - οι ερωτήσεις ξεκλειδώθηκαν.", "err_all": "Απαντήστε σε όλες τις ερωτήσεις.", "err_both": "Απαντήστε και στις δύο ερωτήσεις.", "err_choice": "Επιλέξτε μία από τις ηχογραφήσεις.", "err_req": "Συμπληρώστε τις υποχρεωτικές απαντήσεις.", "err_slid": "Μετακινήστε και τους δύο δείκτες για να βαθμολογήσετε τον αφηγητή.", "save_failed": "Η αποθήκευση στον διακομιστή απέτυχε - αντιγράψτε το παρακάτω κείμενο και επικολλήστε το στο πεδίο απάντησης του Prolific."};
+var params=new URLSearchParams(location.search);
+var pid=params.get("PROLIFIC_PID")||"";
+var studyId=params.get("STUDY_ID")||"";
+var sessionId=params.get("SESSION_ID")||"";
+var seedSource=(pid||sessionId)?pid+"|"+sessionId:String(Date.now())+String(Math.random());
+function seed32(v){var h=2166136261;for(var i=0;i<v.length;i++){h^=v.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var random=rng(seed32(seedSource));
+
+var VARIANTS={v1:["KA","KB"],v2:["KB","KA"]};
+var forced=params.get("v");
+var names=Object.keys(VARIANTS);
+var variant=(forced&&VARIANTS["v"+forced])?"v"+forced:names[Math.floor(random()*names.length)];
+var order=VARIANTS[variant];
+document.getElementById("au-1").src="clips/clip-"+order[0]+".mp3";
+document.getElementById("au-2").src="clips/clip-"+order[1]+".mp3";
+
+if(params.get("debug")==="1"){
+  document.querySelector("#s-1 h2").textContent+="  ["+variant+" | "+LANG+"-"+order[0]+"]";
+  document.querySelector("#s-2 h2").textContent+="  ["+variant+" | "+LANG+"-"+order[1]+"]";
+}
+
+var timeline={page_loaded:Date.now()};
+var watched={};
+
+function setupAudio(n){
+  var audio=document.getElementById("au-"+n);
+  var label=order[n-1];
+  var furthest=0,correcting=false,playedAt=null,done=false;
+  watched[label]=0;
+  audio.addEventListener("play",function(){
+    var other=document.getElementById("au-"+(n===1?2:1));
+    if(!other.paused)other.pause();
+    if(!done&&audio.currentTime>furthest+0.35)audio.currentTime=furthest;
+    playedAt=performance.now();
+  });
+  audio.addEventListener("pause",function(){
+    if(playedAt!==null){watched[label]+=(performance.now()-playedAt)/1000;playedAt=null}
+  });
+  audio.addEventListener("ratechange",function(){if(audio.playbackRate!==1)audio.playbackRate=1});
+  audio.addEventListener("timeupdate",function(){
+    if(!correcting&&audio.currentTime<=furthest+0.75)furthest=Math.max(furthest,audio.currentTime);
+  });
+  audio.addEventListener("seeking",function(){
+    if(done)return;
+    if(Math.abs(audio.currentTime-furthest)>0.35){
+      correcting=true;audio.currentTime=furthest;
+      setTimeout(function(){correcting=false},0);
+    }
+  });
+  audio.addEventListener("ended",function(){
+    if(playedAt!==null){watched[label]+=(performance.now()-playedAt)/1000;playedAt=null}
+    done=true;
+    timeline["clip"+n+"_ended"]=Date.now();
+    document.getElementById("q-"+n).disabled=false;
+    var gate=document.getElementById("gate-"+n);
+    gate.textContent=MSG.gate_done;
+    gate.className="gate done";
+  });
+}
+setupAudio(1);setupAudio(2);
+
+["native","human"].forEach(function(name){
+  var slider=document.querySelector('[data-q="'+name+'"]');
+  slider.addEventListener("input",function(){
+    slider.dataset.touched="1";
+    document.getElementById("val-"+name).textContent=slider.value;
+  });
+});
+
+document.querySelectorAll('.choice-row input').forEach(function(radio){
+  radio.addEventListener("change",function(){
+    document.getElementById("pick-1").classList.toggle("picked",radio.value==="first"&&radio.checked);
+    document.getElementById("pick-2").classList.toggle("picked",radio.value==="second"&&radio.checked);
+  });
+});
+
+function unlock(id){var s=document.getElementById(id);s.classList.remove("locked");s.scrollIntoView({behavior:"smooth",block:"start"})}
+function el(name){return document.querySelector('[data-q="'+name+'"]')}
+function sel(name){var e=el(name);return{i:e.selectedIndex,t:e.value}}
+function clipBlock(n,err){
+  var tempo=sel("tempo-"+n), attention=sel("uwaga-"+n),
+      fatigue=sel("zmeczenie-"+n), comfort=sel("komfort-"+n);
+  if(!tempo.i||!attention.i||!fatigue.i||!comfort.i){err.textContent=MSG.err_all;return null}
+  err.textContent="";
+  return{tempo:tempo,attention:attention,fatigue:fatigue,comfort:comfort,
+         word_issues:el("bledy-"+n).value.trim()||null};
+}
+
+document.getElementById("start").addEventListener("click",function(){
+  var err=document.getElementById("err-intro");
+  if(!sel("first-language").i||!sel("gear").i){err.textContent=MSG.err_both;return}
+  err.textContent="";
+  timeline.intro_done=Date.now();
+  unlock("s-1");
+});
+document.getElementById("dalej-1").addEventListener("click",function(){
+  if(!clipBlock(1,document.getElementById("err-1")))return;
+  timeline.clip1_answered=Date.now();
+  unlock("s-2");
+});
+document.getElementById("dalej-2").addEventListener("click",function(){
+  if(!clipBlock(2,document.getElementById("err-2")))return;
+  timeline.clip2_answered=Date.now();
+  document.getElementById("q-final").disabled=false;
+  unlock("s-final");
+});
+
+document.getElementById("wyslij").addEventListener("click",function(){
+  var err=document.getElementById("err-final");
+  var a1=clipBlock(1,err),a2=clipBlock(2,err);
+  if(!a1||!a2)return;
+  var pick=document.querySelector('.choice-row input:checked');
+  if(!pick){err.textContent=MSG.err_choice;return}
+  if(!el("powod").value.trim()||!el("zapamietane").value.trim()){err.textContent=MSG.err_req;return}
+  var nativeSlider=el("native");
+  var humanSlider=el("human");
+  if(nativeSlider.dataset.touched!=="1"||humanSlider.dataset.touched!=="1"){
+    err.textContent=MSG.err_slid;return}
+  err.textContent="";
+  timeline.submitted=Date.now();
+  var payload={
+    schema:"vidr-tempo-fleet-duel-response/v2",
+    language:LANG,
+    prolific:{pid:pid||null,study_id:studyId||null,session_id:sessionId||null},
+    variant:variant,
+    presentation_order:order,
+    watched_seconds:watched,
+    timeline:timeline,
+    intro:{first_language:sel("first-language"),gear:sel("gear")},
+    clip1:{label:order[0],answers:a1},
+    clip2:{label:order[1],answers:a2},
+    final:{
+      choice_position:pick.value,
+      choice_label:pick.value==="first"?order[0]:order[1],
+      reason:el("powod").value.trim(),
+      recall:el("zapamietane").value.trim(),
+      native:Number(nativeSlider.value),
+      human:Number(humanSlider.value),
+      notes:el("uwagi-koncowe").value.trim()||null
+    }
+  };
+  var button=document.getElementById("wyslij");
+  button.disabled=true;
+  var fd=new FormData();fd.set("entry.997611096",JSON.stringify(payload));fetch("https://docs.google.com/forms/d/e/1FAIpQLSdJLdxf5XM8yp9iDj096FrxSLCx39M026_XEwC6uMfrkitkNA/formResponse",{method:"POST",mode:"no-cors",body:fd})
+    .then(function(){finish(payload,true)})
+    .catch(function(){finish(payload,false)});
+});
+
+function finish(payload,saved){
+  document.getElementById("ankieta").style.display="none";
+  var end=document.getElementById("koniec");
+  end.style.display="block";
+  if(!saved){
+    end.querySelector("p").textContent=MSG.save_failed;
+    var box=document.getElementById("wynik");
+    box.hidden=false;box.value=JSON.stringify(payload,null,2);box.select();
+  }
+  end.scrollIntoView({behavior:"smooth"});
+}
+})();
+</script>
+</body>
+</html>
