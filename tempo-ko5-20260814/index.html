@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ko" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>다큐멘터리 내레이터 평가</title>
+<style>
+body{font:16px/1.55 Segoe UI,Arial,sans-serif;max-width:760px;margin:auto;padding:24px;background:#faf8f3;color:#24231f}
+section{border:1px solid #cbc5b8;border-radius:12px;padding:18px;margin:18px 0;background:#fff}
+section.locked{opacity:.45;pointer-events:none}
+h1{font-size:1.45em}
+h2{font-size:1.15em;margin-top:0}
+audio{display:block;width:100%;margin:10px 0 16px}
+label{display:block;margin:14px 0 4px;font-weight:600}
+select,textarea{display:block;width:100%;padding:8px;border:1px solid #cbc5b8;border-radius:8px;font:inherit;background:#fff}
+.gate{font-weight:600;color:#8b4b2b;margin:6px 0}
+.gate.done{color:#2e6b34}
+.slider-row{display:flex;align-items:center;gap:14px}
+.slider-row input[type=range]{flex:1}
+.slider-val{min-width:2.2em;text-align:center;font-weight:700;font-size:1.2em}
+.slider-hint{font-weight:400;color:#6b6659;font-size:.9em;margin-top:2px}
+button{padding:11px 20px;border-radius:9px;border:1px solid #8b4b2b;background:#8b4b2b;color:#fff;font:inherit;font-weight:600;cursor:pointer}
+button:disabled{opacity:.4;cursor:default}
+fieldset{border:0;padding:0;margin:0}
+fieldset:disabled{opacity:.5}
+.choice-row{display:flex;gap:12px;margin-top:6px}
+.choice-row label{flex:1;border:2px solid #cbc5b8;border-radius:10px;padding:14px;text-align:center;cursor:pointer;font-weight:700;margin:0}
+.choice-row input{margin-inline-end:8px}
+.choice-row label.picked{border-color:#8b4b2b;background:#f6ece4}
+#koniec{display:none}
+.code{font-size:1.5em;font-weight:800;letter-spacing:.06em;background:#f0ede5;padding:10px 16px;border-radius:8px;display:inline-block}
+.err{color:#a33;font-weight:600;margin-top:10px;min-height:1.2em}
+</style>
+</head>
+<body>
+<h1>다큐멘터리 내레이터 평가</h1>
+
+<form id="ankieta" autocomplete="off">
+
+<section id="s-intro">
+<h2>시작하기 전에</h2>
+<p>음악이 있는 다큐멘터리 영화에서 <strong>같은 부분을 두 가지 버전으로</strong> 듣게 됩니다. 두 버전 모두 같은 내레이터가 한국어로 읽습니다(총 약 2분). 두 버전은 서로 다를 수 있으니 각각 따로 평가해 주세요. <strong>처음부터 끝까지</strong> 들어 주세요 - 녹음이 끝나야 질문이 열립니다. 정답이나 오답은 없으며, 여러분의 인상을 여쭙는 것입니다.</p>
+<label>한국어가 모국어입니까?
+<select data-q="first-language" required><option value=""></option><option>예</option><option>아니요</option></select></label>
+<label>무엇으로 듣고 계십니까?
+<select data-q="gear" required><option value=""></option><option>헤드폰 또는 이어폰</option><option>내장 또는 외장 스피커</option></select></label>
+<p><button type="button" id="start">듣기 시작</button></p>
+<p class="err" id="err-intro"></p>
+</section>
+
+<section id="s-1" class="locked">
+<h2>첫 번째 녹음</h2>
+<p class="gate" id="gate-1">질문을 열려면 녹음을 끝까지 들어 주세요.</p>
+<audio id="au-1" controls controlslist="noplaybackrate nodownload" preload="metadata"></audio>
+<fieldset id="q-1" disabled>
+<label>내레이션 속도를 어떻게 평가하십니까?
+<select data-q="tempo-1" required><option value=""></option><option>확실히 너무 느림</option><option>약간 느림</option><option>딱 알맞음</option><option>약간 빠름</option><option>확실히 너무 빠름</option></select></label>
+<label>이 속도가 주의를 계속 붙잡아 둡니까?
+<select data-q="uwaga-1" required><option value=""></option><option>예, 힘들이지 않고</option><option>예, 하지만 약간의 노력이 필요함</option><option>아니요</option></select></label>
+<label>한 시간 후에는 이 속도가 피곤하게 느껴질까요?
+<select data-q="zmeczenie-1" required><option value=""></option><option>아니요, 계속 들을 수 있을 것 같음</option><option>아마 아닐 것</option><option>말하기 어려움</option><option>아마 그럴 것</option><option>예, 시청을 중단할 것 같음</option></select></label>
+<label>이 버전은 듣기에 얼마나 쉽고 편안합니까?
+<select data-q="komfort-1" required><option value=""></option><option>매우 쉽고 편안함</option><option>꽤 편안함</option><option>보통</option><option>약간의 노력이 필요함</option><option>매우 힘듦</option></select></label>
+<label>속도 때문에 어떤 단어의 명료함, 발음, 소리가 나빠집니까? 그렇다면 그 단어와 대략적인 시점을 적어 주세요. (선택 사항)
+<textarea data-q="bledy-1" rows="2"></textarea></label>
+<p><button type="button" id="dalej-1">두 번째 녹음으로</button></p>
+<p class="err" id="err-1"></p>
+</fieldset>
+</section>
+
+<section id="s-2" class="locked">
+<h2>두 번째 녹음</h2>
+<p class="gate" id="gate-2">질문을 열려면 녹음을 끝까지 들어 주세요.</p>
+<audio id="au-2" controls controlslist="noplaybackrate nodownload" preload="metadata"></audio>
+<fieldset id="q-2" disabled>
+<label>내레이션 속도를 어떻게 평가하십니까?
+<select data-q="tempo-2" required><option value=""></option><option>확실히 너무 느림</option><option>약간 느림</option><option>딱 알맞음</option><option>약간 빠름</option><option>확실히 너무 빠름</option></select></label>
+<label>이 속도가 주의를 계속 붙잡아 둡니까?
+<select data-q="uwaga-2" required><option value=""></option><option>예, 힘들이지 않고</option><option>예, 하지만 약간의 노력이 필요함</option><option>아니요</option></select></label>
+<label>한 시간 후에는 이 속도가 피곤하게 느껴질까요?
+<select data-q="zmeczenie-2" required><option value=""></option><option>아니요, 계속 들을 수 있을 것 같음</option><option>아마 아닐 것</option><option>말하기 어려움</option><option>아마 그럴 것</option><option>예, 시청을 중단할 것 같음</option></select></label>
+<label>이 버전은 듣기에 얼마나 쉽고 편안합니까?
+<select data-q="komfort-2" required><option value=""></option><option>매우 쉽고 편안함</option><option>꽤 편안함</option><option>보통</option><option>약간의 노력이 필요함</option><option>매우 힘듦</option></select></label>
+<label>속도 때문에 어떤 단어의 명료함, 발음, 소리가 나빠집니까? 그렇다면 그 단어와 대략적인 시점을 적어 주세요. (선택 사항)
+<textarea data-q="bledy-2" rows="2"></textarea></label>
+<p><button type="button" id="dalej-2">마지막 질문으로</button></p>
+<p class="err" id="err-2"></p>
+</fieldset>
+</section>
+
+<section id="s-final" class="locked">
+<h2>마지막 질문</h2>
+<fieldset id="q-final" disabled>
+<label>한 시간짜리 다큐멘터리에 어느 버전의 속도가 더 적합합니까?</label>
+<div class="choice-row">
+<label id="pick-1"><input type="radio" name="wybor" value="first">첫 번째 녹음</label>
+<label id="pick-2"><input type="radio" name="wybor" value="second">두 번째 녹음</label>
+</div>
+<label>선택에 가장 크게 작용한 것은 무엇입니까?
+<textarea data-q="powod" rows="3" required></textarea></label>
+<label>한 문장으로: 들으신 부분은 무엇에 관한 내용이었습니까?
+<textarea data-q="zapamietane" rows="2" required></textarea></label>
+<label>내레이터가 한국어 원어민처럼 얼마나 자연스럽게 들립니까?
+<div class="slider-row"><input type="range" min="1" max="10" step="1" value="5" data-q="native" data-touched="0"><span class="slider-val" id="val-native">-</span></div>
+<div class="slider-hint">1 = 뚜렷한 외국인 억양, 10 = 완벽한 원어민. 슬라이더를 움직여 평가해 주세요.</div></label>
+<label>내레이터가 합성 음성이 아니라 실제 사람처럼 얼마나 들립니까?
+<div class="slider-row"><input type="range" min="1" max="10" step="1" value="5" data-q="human" data-touched="0"><span class="slider-val" id="val-human">-</span></div>
+<div class="slider-hint">1 = 확실히 합성 음성, 10 = 사람과 구별 불가. 슬라이더를 움직여 평가해 주세요.</div></label>
+<label>그 밖에 저희가 알아야 할 것이 있습니까? (선택 사항)
+<textarea data-q="uwagi-koncowe" rows="2"></textarea></label>
+<p><button type="button" id="wyslij">답변 제출</button></p>
+<p class="err" id="err-final"></p>
+</fieldset>
+</section>
+
+</form>
+
+<section id="koniec">
+<h2>감사합니다!</h2>
+<p>답변이 저장되었습니다.</p>
+<p>Prolific 완료 코드:</p>
+<p><span class="code">VIDR-TEMPO5-KO</span></p>
+<p><a href="https://app.prolific.com/submissions/complete?cc=VIDR-TEMPO5-KO"><button type="button">Prolific &rarr;</button></a></p>
+<textarea id="wynik" readonly hidden rows="14" style="width:100%;margin-top:14px"></textarea>
+</section>
+
+<script>
+(function(){
+"use strict";
+var LANG="ko";
+var MSG={"gate_done": "녹음을 끝까지 들었습니다 - 질문이 열렸습니다.", "err_all": "모든 질문에 답해 주세요.", "err_both": "두 질문 모두에 답해 주세요.", "err_choice": "녹음 중 하나를 선택해 주세요.", "err_req": "필수 답변을 작성해 주세요.", "err_slid": "내레이터를 평가하려면 두 슬라이더를 모두 움직여 주세요.", "save_failed": "서버 저장에 실패했습니다 - 아래 텍스트를 복사하여 Prolific 답변란에 붙여 넣어 주세요."};
+var params=new URLSearchParams(location.search);
+var pid=params.get("PROLIFIC_PID")||"";
+var studyId=params.get("STUDY_ID")||"";
+var sessionId=params.get("SESSION_ID")||"";
+var seedSource=(pid||sessionId)?pid+"|"+sessionId:String(Date.now())+String(Math.random());
+function seed32(v){var h=2166136261;for(var i=0;i<v.length;i++){h^=v.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var random=rng(seed32(seedSource));
+
+var VARIANTS={v1:["KA","KB"],v2:["KB","KA"]};
+var forced=params.get("v");
+var names=Object.keys(VARIANTS);
+var variant=(forced&&VARIANTS["v"+forced])?"v"+forced:names[Math.floor(random()*names.length)];
+var order=VARIANTS[variant];
+document.getElementById("au-1").src="clips/clip-"+order[0]+".mp3";
+document.getElementById("au-2").src="clips/clip-"+order[1]+".mp3";
+
+if(params.get("debug")==="1"){
+  document.querySelector("#s-1 h2").textContent+="  ["+variant+" | "+LANG+"-"+order[0]+"]";
+  document.querySelector("#s-2 h2").textContent+="  ["+variant+" | "+LANG+"-"+order[1]+"]";
+}
+
+var timeline={page_loaded:Date.now()};
+var watched={};
+
+function setupAudio(n){
+  var audio=document.getElementById("au-"+n);
+  var label=order[n-1];
+  var furthest=0,correcting=false,playedAt=null,done=false;
+  watched[label]=0;
+  audio.addEventListener("play",function(){
+    var other=document.getElementById("au-"+(n===1?2:1));
+    if(!other.paused)other.pause();
+    if(!done&&audio.currentTime>furthest+0.35)audio.currentTime=furthest;
+    playedAt=performance.now();
+  });
+  audio.addEventListener("pause",function(){
+    if(playedAt!==null){watched[label]+=(performance.now()-playedAt)/1000;playedAt=null}
+  });
+  audio.addEventListener("ratechange",function(){if(audio.playbackRate!==1)audio.playbackRate=1});
+  audio.addEventListener("timeupdate",function(){
+    if(!correcting&&audio.currentTime<=furthest+0.75)furthest=Math.max(furthest,audio.currentTime);
+  });
+  audio.addEventListener("seeking",function(){
+    if(done)return;
+    if(Math.abs(audio.currentTime-furthest)>0.35){
+      correcting=true;audio.currentTime=furthest;
+      setTimeout(function(){correcting=false},0);
+    }
+  });
+  audio.addEventListener("ended",function(){
+    if(playedAt!==null){watched[label]+=(performance.now()-playedAt)/1000;playedAt=null}
+    done=true;
+    timeline["clip"+n+"_ended"]=Date.now();
+    document.getElementById("q-"+n).disabled=false;
+    var gate=document.getElementById("gate-"+n);
+    gate.textContent=MSG.gate_done;
+    gate.className="gate done";
+  });
+}
+setupAudio(1);setupAudio(2);
+
+["native","human"].forEach(function(name){
+  var slider=document.querySelector('[data-q="'+name+'"]');
+  slider.addEventListener("input",function(){
+    slider.dataset.touched="1";
+    document.getElementById("val-"+name).textContent=slider.value;
+  });
+});
+
+document.querySelectorAll('.choice-row input').forEach(function(radio){
+  radio.addEventListener("change",function(){
+    document.getElementById("pick-1").classList.toggle("picked",radio.value==="first"&&radio.checked);
+    document.getElementById("pick-2").classList.toggle("picked",radio.value==="second"&&radio.checked);
+  });
+});
+
+function unlock(id){var s=document.getElementById(id);s.classList.remove("locked");s.scrollIntoView({behavior:"smooth",block:"start"})}
+function el(name){return document.querySelector('[data-q="'+name+'"]')}
+function sel(name){var e=el(name);return{i:e.selectedIndex,t:e.value}}
+function clipBlock(n,err){
+  var tempo=sel("tempo-"+n), attention=sel("uwaga-"+n),
+      fatigue=sel("zmeczenie-"+n), comfort=sel("komfort-"+n);
+  if(!tempo.i||!attention.i||!fatigue.i||!comfort.i){err.textContent=MSG.err_all;return null}
+  err.textContent="";
+  return{tempo:tempo,attention:attention,fatigue:fatigue,comfort:comfort,
+         word_issues:el("bledy-"+n).value.trim()||null};
+}
+
+document.getElementById("start").addEventListener("click",function(){
+  var err=document.getElementById("err-intro");
+  if(!sel("first-language").i||!sel("gear").i){err.textContent=MSG.err_both;return}
+  err.textContent="";
+  timeline.intro_done=Date.now();
+  unlock("s-1");
+});
+document.getElementById("dalej-1").addEventListener("click",function(){
+  if(!clipBlock(1,document.getElementById("err-1")))return;
+  timeline.clip1_answered=Date.now();
+  unlock("s-2");
+});
+document.getElementById("dalej-2").addEventListener("click",function(){
+  if(!clipBlock(2,document.getElementById("err-2")))return;
+  timeline.clip2_answered=Date.now();
+  document.getElementById("q-final").disabled=false;
+  unlock("s-final");
+});
+
+document.getElementById("wyslij").addEventListener("click",function(){
+  var err=document.getElementById("err-final");
+  var a1=clipBlock(1,err),a2=clipBlock(2,err);
+  if(!a1||!a2)return;
+  var pick=document.querySelector('.choice-row input:checked');
+  if(!pick){err.textContent=MSG.err_choice;return}
+  if(!el("powod").value.trim()||!el("zapamietane").value.trim()){err.textContent=MSG.err_req;return}
+  var nativeSlider=el("native");
+  var humanSlider=el("human");
+  if(nativeSlider.dataset.touched!=="1"||humanSlider.dataset.touched!=="1"){
+    err.textContent=MSG.err_slid;return}
+  err.textContent="";
+  timeline.submitted=Date.now();
+  var payload={
+    schema:"vidr-tempo-fleet-duel-response/v2-duel5",
+    language:LANG,
+    prolific:{pid:pid||null,study_id:studyId||null,session_id:sessionId||null},
+    variant:variant,
+    presentation_order:order,
+    watched_seconds:watched,
+    timeline:timeline,
+    intro:{first_language:sel("first-language"),gear:sel("gear")},
+    clip1:{label:order[0],answers:a1},
+    clip2:{label:order[1],answers:a2},
+    final:{
+      choice_position:pick.value,
+      choice_label:pick.value==="first"?order[0]:order[1],
+      reason:el("powod").value.trim(),
+      recall:el("zapamietane").value.trim(),
+      native:Number(nativeSlider.value),
+      human:Number(humanSlider.value),
+      notes:el("uwagi-koncowe").value.trim()||null
+    }
+  };
+  var button=document.getElementById("wyslij");
+  button.disabled=true;
+  var fd=new FormData();fd.set("entry.997611096",JSON.stringify(payload));fetch("https://docs.google.com/forms/d/e/1FAIpQLSdJLdxf5XM8yp9iDj096FrxSLCx39M026_XEwC6uMfrkitkNA/formResponse",{method:"POST",mode:"no-cors",body:fd})
+    .then(function(){finish(payload,true)})
+    .catch(function(){finish(payload,false)});
+});
+
+function finish(payload,saved){
+  document.getElementById("ankieta").style.display="none";
+  var end=document.getElementById("koniec");
+  end.style.display="block";
+  if(!saved){
+    end.querySelector("p").textContent=MSG.save_failed;
+    var box=document.getElementById("wynik");
+    box.hidden=false;box.value=JSON.stringify(payload,null,2);box.select();
+  }
+  end.scrollIntoView({behavior:"smooth"});
+}
+})();
+</script>
+</body>
+</html>
