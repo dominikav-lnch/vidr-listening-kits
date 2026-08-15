@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Évaluation d&#x27;un narrateur de documentaire</title>
+<style>
+body{font:16px/1.55 Segoe UI,Arial,sans-serif;max-width:760px;margin:auto;padding:24px;background:#faf8f3;color:#24231f}
+section{border:1px solid #cbc5b8;border-radius:12px;padding:18px;margin:18px 0;background:#fff}
+section.locked{opacity:.45;pointer-events:none}
+section.zamkniete{opacity:.55;pointer-events:none;background:#f6f4ef}
+h1{font-size:1.45em}
+h2{font-size:1.15em;margin-top:0}
+audio{display:block;width:100%;margin:10px 0 16px}
+label{display:block;margin:14px 0 4px;font-weight:600}
+select,textarea{display:block;width:100%;padding:8px;border:1px solid #cbc5b8;border-radius:8px;font:inherit;background:#fff}
+textarea{font-weight:400}
+.gate{font-weight:600;color:#8b4b2b;margin:6px 0}
+.gate.done{color:#2e6b34}
+.note{background:#f6ece4;border:1px solid #d9c3b0;border-radius:9px;padding:12px 14px;margin:0 0 6px}
+.slider-row{display:flex;align-items:center;gap:14px}
+.slider-row input[type=range]{flex:1}
+.slider-val{min-width:2.2em;text-align:center;font-weight:700;font-size:1.2em}
+.slider-hint{font-weight:400;color:#6b6659;font-size:.9em;margin-top:2px}
+button{padding:11px 20px;border-radius:9px;border:1px solid #8b4b2b;background:#8b4b2b;color:#fff;font:inherit;font-weight:600;cursor:pointer}
+button:disabled{opacity:.4;cursor:default}
+fieldset{border:0;padding:0;margin:0}
+fieldset:disabled{opacity:.5}
+.choice-row{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap}
+.choice-row label{flex:1;min-width:9em;border:2px solid #cbc5b8;border-radius:10px;padding:12px;text-align:center;cursor:pointer;font-weight:700;margin:0}
+.choice-row input{margin-inline-end:8px}
+.choice-row label.picked{border-color:#8b4b2b;background:#f6ece4}
+#koniec{display:none}
+.code{font-size:1.5em;font-weight:800;letter-spacing:.06em;background:#f0ede5;padding:10px 16px;border-radius:8px;display:inline-block}
+.err{color:#a33;font-weight:600;margin-top:10px;min-height:1.2em}
+</style>
+</head>
+<body>
+<h1>Évaluation d&#x27;un narrateur de documentaire</h1>
+
+<form id="ankieta" autocomplete="off">
+
+<section id="s-intro">
+<h2>Avant de commencer</h2>
+<p>Vous allez entendre <strong>trois enregistrements</strong> tirés d'un film documentaire en français, lus par le même narrateur (environ huit minutes chacun, voix seule, sans musique). Les textes sont différents mais viennent du même film. Nous cherchons à savoir <strong>lequel conviendrait le mieux pour un documentaire d'une heure</strong>. Écoutez <strong>du début à la fin</strong> - les questions ne se débloquent qu'à la fin de l'enregistrement. L'étude est longue par nature : c'est justement sur la durée qu'une narration se juge. Un casque est recommandé.</p>
+<label>Le français est-il votre langue maternelle ?
+<select data-q="first-language" required><option value=""></option><option>Oui</option><option>Non</option></select></label>
+<label>Avec quoi écoutez-vous ?
+<select data-q="gear" required><option value=""></option><option>Casque ou écouteurs</option><option>Haut-parleurs intégrés ou externes</option></select></label>
+<p><button type="button" id="start">Commencer l&#x27;écoute</button></p>
+<p class="err" id="err-intro"></p>
+</section>
+
+<section id="s-1" class="locked">
+<h2>Premier enregistrement</h2>
+<audio id="au-1" controls preload="none"></audio>
+<p class="gate" id="gate-1">Écoutez l&#x27;enregistrement en entier pour débloquer les questions.</p>
+<fieldset id="q-1" disabled>
+<label>Regarderiez-vous un documentaire d&#x27;une heure raconté ainsi ?
+<select data-q="ogladalbym-1" required><option value=""></option><option>Oui, sans hésiter</option><option>Oui, probablement</option><option>Je ne sais pas</option><option>Probablement pas</option><option>Non</option></select></label>
+<label>À quel point ce narrateur sonne-t-il naturel, plutôt que mécanique ?
+<span class="slider-row"><input type="range" data-q="naturel-1" min="1" max="10" step="1" value="5"><span class="slider-val" id="val-naturel-1">5</span></span>
+<span class="slider-hint">1 = très mécanique, comme un robot ; 10 = parfaitement naturel.</span></label>
+<label>Au bout de combien de temps cette voix commencerait-elle à vous fatiguer ?
+<select data-q="zmeczenie-1" required><option value=""></option><option>Elle ne me fatiguerait pas</option><option>Au bout d&#x27;une heure environ</option><option>Au bout d&#x27;une demi-heure environ</option><option>Au bout de quelques minutes</option><option>Elle me fatiguait déjà pendant cet extrait</option></select></label>
+<label>Qu&#x27;est-ce qui vous a marqué dans cet enregistrement, en bien ou en mal ? Écrivez tout ce qui vous vient, même un détail.
+<textarea data-q="rzucilo-1" rows="4" required></textarea></label>
+<p><button type="button" id="dalej-1">Passer au deuxième enregistrement</button></p>
+<p class="err" id="err-1"></p>
+</fieldset>
+</section>
+<section id="s-2" class="locked">
+<h2>Deuxième enregistrement</h2>
+<audio id="au-2" controls preload="none"></audio>
+<p class="gate" id="gate-2">Écoutez l&#x27;enregistrement en entier pour débloquer les questions.</p>
+<fieldset id="q-2" disabled>
+<label>Regarderiez-vous un documentaire d&#x27;une heure raconté ainsi ?
+<select data-q="ogladalbym-2" required><option value=""></option><option>Oui, sans hésiter</option><option>Oui, probablement</option><option>Je ne sais pas</option><option>Probablement pas</option><option>Non</option></select></label>
+<label>À quel point ce narrateur sonne-t-il naturel, plutôt que mécanique ?
+<span class="slider-row"><input type="range" data-q="naturel-2" min="1" max="10" step="1" value="5"><span class="slider-val" id="val-naturel-2">5</span></span>
+<span class="slider-hint">1 = très mécanique, comme un robot ; 10 = parfaitement naturel.</span></label>
+<label>Au bout de combien de temps cette voix commencerait-elle à vous fatiguer ?
+<select data-q="zmeczenie-2" required><option value=""></option><option>Elle ne me fatiguerait pas</option><option>Au bout d&#x27;une heure environ</option><option>Au bout d&#x27;une demi-heure environ</option><option>Au bout de quelques minutes</option><option>Elle me fatiguait déjà pendant cet extrait</option></select></label>
+<label>Qu&#x27;est-ce qui vous a marqué dans cet enregistrement, en bien ou en mal ? Écrivez tout ce qui vous vient, même un détail.
+<textarea data-q="rzucilo-2" rows="4" required></textarea></label>
+<p><button type="button" id="dalej-2">Passer au troisième enregistrement</button></p>
+<p class="err" id="err-2"></p>
+</fieldset>
+</section>
+<section id="s-3" class="locked">
+<h2>Troisième enregistrement</h2>
+<audio id="au-3" controls preload="none"></audio>
+<p class="gate" id="gate-3">Écoutez l&#x27;enregistrement en entier pour débloquer les questions.</p>
+<fieldset id="q-3" disabled>
+<label>Regarderiez-vous un documentaire d&#x27;une heure raconté ainsi ?
+<select data-q="ogladalbym-3" required><option value=""></option><option>Oui, sans hésiter</option><option>Oui, probablement</option><option>Je ne sais pas</option><option>Probablement pas</option><option>Non</option></select></label>
+<label>À quel point ce narrateur sonne-t-il naturel, plutôt que mécanique ?
+<span class="slider-row"><input type="range" data-q="naturel-3" min="1" max="10" step="1" value="5"><span class="slider-val" id="val-naturel-3">5</span></span>
+<span class="slider-hint">1 = très mécanique, comme un robot ; 10 = parfaitement naturel.</span></label>
+<label>Au bout de combien de temps cette voix commencerait-elle à vous fatiguer ?
+<select data-q="zmeczenie-3" required><option value=""></option><option>Elle ne me fatiguerait pas</option><option>Au bout d&#x27;une heure environ</option><option>Au bout d&#x27;une demi-heure environ</option><option>Au bout de quelques minutes</option><option>Elle me fatiguait déjà pendant cet extrait</option></select></label>
+<label>Qu&#x27;est-ce qui vous a marqué dans cet enregistrement, en bien ou en mal ? Écrivez tout ce qui vous vient, même un détail.
+<textarea data-q="rzucilo-3" rows="4" required></textarea></label>
+<p><button type="button" id="dalej-3">Passer à la comparaison</button></p>
+<p class="err" id="err-3"></p>
+</fieldset>
+</section>
+
+<section id="s-compare" class="locked">
+<h2>Comparaison des trois enregistrements</h2>
+<fieldset id="q-compare" disabled>
+<label>Avez-vous entendu des différences entre les trois narrations ?
+<select data-q="roznica" required><option value=""></option><option>Oui, des différences nettes</option><option>Oui, de légères différences</option><option>Non, elles m&#x27;ont paru identiques</option></select></label>
+<label>Lequel choisiriez-vous pour raconter un documentaire d&#x27;une heure ?</label>
+<div class="choice-row"><label><input type="radio" name="najlepszy" value="1">Le premier</label><label><input type="radio" name="najlepszy" value="2">Le deuxième</label><label><input type="radio" name="najlepszy" value="3">Le troisième</label></div>
+<label>Et lequel écarteriez-vous en premier ?</label>
+<div class="choice-row"><label><input type="radio" name="najgorszy" value="1">Le premier</label><label><input type="radio" name="najgorszy" value="2">Le deuxième</label><label><input type="radio" name="najgorszy" value="3">Le troisième</label></div>
+<label>Pourquoi ? Qu&#x27;est-ce qui fait la différence entre eux, selon vous ?
+<textarea data-q="dlaczego" rows="4" required></textarea></label>
+<p><button type="button" id="dalej-compare">Passer aux dernières questions</button></p>
+<p class="err" id="err-compare"></p>
+</fieldset>
+</section>
+
+<section id="s-reveal" class="locked">
+<h2>Dernières questions</h2>
+<p class="note">Ces trois enregistrements ne diffèrent que par un réglage : <strong>la variation de l'intonation</strong>. Vos réponses précédentes sont enregistrées et ne peuvent plus être modifiées - répondez maintenant en toute franchise, y compris si vous n'aviez rien remarqué.</p>
+<fieldset id="q-reveal" disabled>
+<label>L&#x27;un d&#x27;eux vous a-t-il paru monotone, plat, toujours sur le même ton ?
+<select data-q="monotonny" required><option value=""></option><option>Non, aucun</option><option>Le premier</option><option>Le deuxième</option><option>Le troisième</option><option>Plusieurs d&#x27;entre eux</option><option>Tous les trois</option></select></label>
+<label>Lequel a l&#x27;intonation la plus vivante, la plus variée ?
+<select data-q="ekspresja" required><option value=""></option><option>Le premier</option><option>Le deuxième</option><option>Le troisième</option><option>Aucune différence audible</option></select></label>
+<label>Et à l&#x27;inverse : l&#x27;un d&#x27;eux en fait-il TROP, avec une intonation exagérée ou théâtrale pour un documentaire ?
+<select data-q="przesada" required><option value=""></option><option>Non, aucun</option><option>Le premier</option><option>Le deuxième</option><option>Le troisième</option></select></label>
+<label>Aviez-vous remarqué ces différences d&#x27;intonation AVANT que nous posions la question ?
+<select data-q="wczesniej" required><option value=""></option><option>Oui, tout de suite</option><option>Oui, mais seulement en y repensant</option><option>Non, je ne l&#x27;ai remarqué qu&#x27;en lisant la question</option></select></label>
+<label>Est-ce que l&#x27;un de ces narrateurs conviendrait vraiment pour un documentaire d&#x27;une heure en français ?
+<select data-q="nadaje-sie" required><option value=""></option><option>Oui, celui que j&#x27;ai choisi conviendrait</option><option>C&#x27;est le meilleur des trois, mais aucun n&#x27;est vraiment convaincant</option><option>Non, les trois sont mauvais</option></select></label>
+<label>Avez-vous entendu des mots mal prononcés ? Lesquels, et dans quel enregistrement ? Si vous n&#x27;avez rien entendu de tel, écrivez-le.
+<textarea data-q="zle-slowa" rows="3" required></textarea></label>
+<label>Autre chose que nous devrions savoir ? (facultatif)
+<textarea data-q="uwagi-koncowe" rows="3"></textarea></label>
+<p><button type="button" id="wyslij">Envoyer les réponses</button></p>
+<p class="err" id="err-reveal"></p>
+</fieldset>
+</section>
+</form>
+
+<section id="koniec">
+<h2>Merci !</h2>
+<p>Vos réponses ont été enregistrées.</p>
+<p>Code de complétion Prolific :</p>
+<p><span class="code">VIDR-STAB-FR</span></p>
+<p><a href="https://app.prolific.com/submissions/complete?cc=VIDR-STAB-FR"><button type="button">Prolific &rarr;</button></a></p>
+<textarea id="wynik" rows="10" hidden></textarea>
+</section>
+
+<script>
+(function(){
+"use strict";
+var ILE=3;
+var MSG={"gate_done": "Enregistrement écouté en entier - questions débloquées.", "err_clip": "Veuillez répondre aux questions et déplacer le curseur.", "err_req": "Veuillez répondre à toutes les questions obligatoires.", "err_choice": "Veuillez choisir un enregistrement pour chaque question.", "save_failed": "L'enregistrement sur le serveur a échoué - copiez le texte ci-dessous et collez-le dans le champ de réponse Prolific."};
+var params=new URLSearchParams(location.search);
+var pid=params.get("PROLIFIC_PID")||"";
+var studyId=params.get("STUDY_ID")||"";
+var sessionId=params.get("SESSION_ID")||"";
+var seedSource=(pid||sessionId)?pid+"|"+sessionId:String(Date.now())+String(Math.random());
+function seed32(v){var h=2166136261;for(var i=0;i<v.length;i++){h^=v.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var random=rng(seed32(seedSource));
+
+var VARIANTS={"v1": ["s10", "s05", "s00"], "v2": ["s05", "s00", "s10"], "v3": ["s00", "s10", "s05"], "v4": ["s10", "s00", "s05"], "v5": ["s00", "s05", "s10"], "v6": ["s05", "s10", "s00"]};
+var forced=params.get("v");
+var names=Object.keys(VARIANTS);
+var variant=(forced&&VARIANTS["v"+forced])?"v"+forced:names[Math.floor(random()*names.length)];
+var order=VARIANTS[variant];
+for(var i=1;i<=ILE;i++)document.getElementById("au-"+i).src="clips/clip-"+order[i-1]+".mp3";
+
+if(params.get("debug")==="1"){
+  for(var d=1;d<=ILE;d++)document.querySelector("#s-"+d+" h2").textContent+="  ["+variant+" | "+order[d-1]+"]";
+}
+
+var timeline={page_loaded:Date.now()};
+var watched={};
+
+function setupAudio(n){
+  var audio=document.getElementById("au-"+n);
+  var label=order[n-1];
+  var furthest=0,correcting=false,playedAt=null,done=false;
+  watched[label]=0;
+  audio.addEventListener("play",function(){
+    for(var o=1;o<=ILE;o++){if(o===n)continue;var other=document.getElementById("au-"+o);if(!other.paused)other.pause()}
+    if(!done&&audio.currentTime>furthest+0.35)audio.currentTime=furthest;
+    playedAt=performance.now();
+  });
+  audio.addEventListener("pause",function(){
+    if(playedAt!==null){watched[label]+=(performance.now()-playedAt)/1000;playedAt=null}
+  });
+  audio.addEventListener("ratechange",function(){if(audio.playbackRate!==1)audio.playbackRate=1});
+  audio.addEventListener("timeupdate",function(){
+    if(!correcting&&audio.currentTime<=furthest+0.75)furthest=Math.max(furthest,audio.currentTime);
+  });
+  audio.addEventListener("seeking",function(){
+    if(done)return;
+    if(Math.abs(audio.currentTime-furthest)>0.35){
+      correcting=true;audio.currentTime=furthest;
+      setTimeout(function(){correcting=false},0);
+    }
+  });
+  audio.addEventListener("ended",function(){
+    if(playedAt!==null){watched[label]+=(performance.now()-playedAt)/1000;playedAt=null}
+    done=true;
+    timeline["clip"+n+"_ended"]=Date.now();
+    document.getElementById("q-"+n).disabled=false;
+    var gate=document.getElementById("gate-"+n);
+    gate.textContent=MSG.gate_done;
+    gate.className="gate done";
+  });
+}
+for(var a=1;a<=ILE;a++)setupAudio(a);
+
+for(var sl=1;sl<=ILE;sl++)(function(n){
+  var slider=document.querySelector('[data-q="naturel-'+n+'"]');
+  slider.addEventListener("input",function(){
+    slider.dataset.touched="1";
+    document.getElementById("val-naturel-"+n).textContent=slider.value;
+  });
+})(sl);
+
+document.querySelectorAll('.choice-row input').forEach(function(radio){
+  radio.addEventListener("change",function(){
+    document.querySelectorAll('.choice-row input[name="'+radio.name+'"]').forEach(function(r){
+      r.closest("label").classList.toggle("picked",r.checked);
+    });
+  });
+});
+
+function el(name){return document.querySelector('[data-q="'+name+'"]')}
+function sel(name){var e=el(name);return{i:e.selectedIndex,t:e.value}}
+function radio(name){return document.querySelector('input[name="'+name+'"]:checked')}
+function unlock(id){var s=document.getElementById(id);s.classList.remove("locked");s.scrollIntoView({behavior:"smooth",block:"start"})}
+
+function zatrzasnij(){
+  var sekcje=["s-compare"],pola=["q-compare"];
+  for(var n=1;n<=ILE;n++){sekcje.push("s-"+n);pola.push("q-"+n)}
+  sekcje.forEach(function(id){document.getElementById(id).classList.add("zamkniete")});
+  pola.forEach(function(id){document.getElementById(id).disabled=true});
+  timeline.blind_locked=Date.now();
+}
+
+function clipBlock(n,err){
+  var ogl=sel("ogladalbym-"+n);
+  var slider=el("naturel-"+n);
+  var zmecz=sel("zmeczenie-"+n);
+  var rzucilo=el("rzucilo-"+n).value.trim();
+  if(!ogl.i||slider.dataset.touched!=="1"||!zmecz.i||!rzucilo){
+    err.textContent=MSG.err_clip;return null}
+  err.textContent="";
+  return{would_watch:ogl,natural:Number(slider.value),tiring:zmecz,stood_out:rzucilo};
+}
+
+function compareBlock(err){
+  var roznica=sel("roznica");
+  var best=radio("najlepszy"),worst=radio("najgorszy");
+  var czemu=el("dlaczego").value.trim();
+  if(!roznica.i){err.textContent=MSG.err_req;return null}
+  if(!best||!worst){err.textContent=MSG.err_choice;return null}
+  if(!czemu){err.textContent=MSG.err_req;return null}
+  err.textContent="";
+  return{difference:roznica,
+         best_position:Number(best.value),best_label:order[Number(best.value)-1],
+         worst_position:Number(worst.value),worst_label:order[Number(worst.value)-1],
+         why:czemu};
+}
+
+document.getElementById("start").addEventListener("click",function(){
+  var err=document.getElementById("err-intro");
+  if(!sel("first-language").i||!sel("gear").i){err.textContent=MSG.err_req;return}
+  err.textContent="";
+  timeline.intro_done=Date.now();
+  unlock("s-1");
+});
+for(var b=1;b<=ILE;b++)(function(n){
+  document.getElementById("dalej-"+n).addEventListener("click",function(){
+    if(!clipBlock(n,document.getElementById("err-"+n)))return;
+    timeline["clip"+n+"_answered"]=Date.now();
+    if(n<ILE){unlock("s-"+(n+1))}
+    else{document.getElementById("q-compare").disabled=false;unlock("s-compare")}
+  });
+})(b);
+
+document.getElementById("dalej-compare").addEventListener("click",function(){
+  if(!compareBlock(document.getElementById("err-compare")))return;
+  timeline.compare_answered=Date.now();
+  zatrzasnij();
+  document.getElementById("q-reveal").disabled=false;
+  unlock("s-reveal");
+});
+
+document.getElementById("wyslij").addEventListener("click",function(){
+  var err=document.getElementById("err-reveal");
+  var answers=[];
+  for(var n=1;n<=ILE;n++){var a=clipBlock(n,err);if(!a)return;answers.push(a)}
+  var compare=compareBlock(err);
+  if(!compare)return;
+  var mono=sel("monotonny"),expr=sel("ekspresja"),over=sel("przesada"),
+      wczesniej=sel("wczesniej"),nadaje=sel("nadaje-sie");
+  if(!mono.i||!expr.i||!over.i||!wczesniej.i||!nadaje.i
+     ||!el("zle-slowa").value.trim()){err.textContent=MSG.err_req;return}
+  err.textContent="";
+  timeline.submitted=Date.now();
+  // Pozycje 1-3 tlumaczymy na ETYKIETY ramion od razu tutaj: w raporcie i tak
+  // liczymy per ramie, a przeliczanie pozniej po stronie analizy juz raz
+  // rozjechalo wyniki, gdy kolejnosc byla losowana.
+  function poz(v,offset){var p=v.i-offset;return (p>=1&&p<=ILE)?order[p-1]:null}
+  var payload={
+    schema:"vidr-fr-stability-response/v1",
+    language:"fr",
+    arms:ILE,
+    design:"blind-then-revealed",
+    prolific:{pid:pid||null,study_id:studyId||null,session_id:sessionId||null},
+    variant:variant,
+    presentation_order:order,
+    watched_seconds:watched,
+    timeline:timeline,
+    intro:{first_language:sel("first-language"),gear:sel("gear")},
+    blind:{
+      clips:answers.map(function(a,i){return{position:i+1,label:order[i],answers:a}}),
+      compare:compare
+    },
+    revealed:{
+      monotone:mono,monotone_label:poz(mono,1),
+      most_expressive:expr,most_expressive_label:poz(expr,0),
+      overacted:over,overacted_label:poz(over,1),
+      noticed_before_asked:wczesniej,
+      usable:nadaje,
+      bad_words:el("zle-slowa").value.trim(),
+      notes:el("uwagi-koncowe").value.trim()||null
+    }
+  };
+  var button=document.getElementById("wyslij");
+  button.disabled=true;
+  var fd=new FormData();
+  fd.set("entry.997611096",JSON.stringify(payload));
+  fetch("https://docs.google.com/forms/d/e/1FAIpQLSdJLdxf5XM8yp9iDj096FrxSLCx39M026_XEwC6uMfrkitkNA/formResponse",{method:"POST",mode:"no-cors",body:fd})
+    .then(function(){finish(payload,true)})
+    .catch(function(){finish(payload,false)});
+});
+
+function finish(payload,saved){
+  document.getElementById("ankieta").style.display="none";
+  var end=document.getElementById("koniec");
+  end.style.display="block";
+  if(!saved){
+    end.querySelector("p").textContent=MSG.save_failed;
+    var box=document.getElementById("wynik");
+    box.hidden=false;box.value=JSON.stringify(payload,null,2);box.select();
+  }
+  end.scrollIntoView({behavior:"smooth"});
+}
+})();
+</script>
+</body>
+</html>
