@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Évaluation de la prononciation d&#x27;un narrateur</title>
+<style>
+body{font:16px/1.55 Segoe UI,Arial,sans-serif;max-width:760px;margin:auto;padding:24px;background:#faf8f3;color:#24231f}
+section{border:1px solid #cbc5b8;border-radius:12px;padding:18px;margin:18px 0;background:#fff}
+section.locked{opacity:.45;pointer-events:none}
+h1{font-size:1.45em}
+h2{font-size:1.15em;margin-top:0}
+audio{display:block;width:100%;margin:10px 0 16px}
+label{display:block;margin:14px 0 4px;font-weight:600}
+select,textarea{display:block;width:100%;padding:8px;border:1px solid #cbc5b8;border-radius:8px;font:inherit;background:#fff}
+textarea{font-weight:400}
+.gate{font-weight:600;color:#8b4b2b;margin:6px 0}
+.gate.done{color:#2e6b34}
+.slider-row{display:flex;align-items:center;gap:14px}
+.slider-row input[type=range]{flex:1}
+.slider-val{min-width:2.2em;text-align:center;font-weight:700;font-size:1.2em}
+.slider-hint{font-weight:400;color:#6b6659;font-size:.9em;margin-top:2px}
+button{padding:11px 20px;border-radius:9px;border:1px solid #8b4b2b;background:#8b4b2b;color:#fff;font:inherit;font-weight:600;cursor:pointer}
+button:disabled{opacity:.4;cursor:default}
+fieldset{border:0;padding:0;margin:0}
+fieldset:disabled{opacity:.5}
+.choice-row{display:flex;gap:12px;margin-top:6px}
+.choice-row label{flex:1;border:2px solid #cbc5b8;border-radius:10px;padding:14px;text-align:center;cursor:pointer;font-weight:700;margin:0}
+.choice-row input{margin-inline-end:8px}
+.choice-row label.picked{border-color:#8b4b2b;background:#f6ece4}
+#koniec{display:none}
+.code{font-size:1.5em;font-weight:800;letter-spacing:.06em;background:#f0ede5;padding:10px 16px;border-radius:8px;display:inline-block}
+.err{color:#a33;font-weight:600;margin-top:10px;min-height:1.2em}
+</style>
+</head>
+<body>
+<h1>Évaluation de la prononciation d&#x27;un narrateur</h1>
+
+<form id="ankieta" autocomplete="off">
+
+<section id="s-intro">
+<h2>Avant de commencer</h2>
+<p>Vous allez entendre <strong>deux enregistrements du même texte</strong> d'un film documentaire, lus par le même narrateur en français (environ trois minutes chacun). Le rythme et la voix sont identiques ; seule la <strong>prononciation</strong> peut différer. Nous vous demandons de juger la <strong>diction</strong> : les mots sont-ils prononcés correctement et le narrateur sonne-t-il naturel ? Écoutez <strong>du début à la fin</strong> - les questions ne se débloquent qu'à la fin de l'enregistrement. Il n'y a pas de bonnes ou de mauvaises réponses ; nous nous intéressons à votre impression. <strong>Un casque est fortement recommandé</strong> : il s'agit de détails de prononciation.</p>
+<label>Le français est-il votre langue maternelle ?
+<select data-q="first-language" required><option value=""></option><option>Oui</option><option>Non</option></select></label>
+<label>Avec quoi écoutez-vous ?
+<select data-q="gear" required><option value=""></option><option>Casque ou écouteurs</option><option>Haut-parleurs intégrés ou externes</option></select></label>
+<p><button type="button" id="start">Commencer l&#x27;écoute</button></p>
+<p class="err" id="err-intro"></p>
+</section>
+
+<section id="s-1" class="locked">
+<h2>Premier enregistrement</h2>
+<audio id="au-1" controls preload="none"></audio>
+<p class="gate" id="gate-1">Écoutez l&#x27;enregistrement en entier pour débloquer les questions.</p>
+<fieldset id="q-1" disabled>
+<label>Comment jugez-vous la clarté de la prononciation dans cet enregistrement ?
+<select data-q="clarte-1" required><option value=""></option><option>Tout est prononcé correctement</option><option>Presque tout, une ou deux hésitations</option><option>Plusieurs mots sonnent faux</option><option>Beaucoup de mots sonnent faux</option><option>La prononciation est mauvaise d&#x27;un bout à l&#x27;autre</option></select></label>
+<label>À quel point ce narrateur sonne-t-il naturel, plutôt que mécanique ?
+<span class="slider-row"><input type="range" data-q="naturel-1" min="1" max="10" step="1" value="5"><span class="slider-val" id="val-naturel-1">5</span></span>
+<span class="slider-hint">1 = très mécanique, comme un robot ; 10 = parfaitement naturel. Déplacez le curseur pour noter.</span></label>
+<label>Quels mots vous ont paru mal prononcés dans cet enregistrement ? Notez-les, et si possible le moment approximatif. (facultatif)
+<textarea data-q="slowa-1" rows="3" placeholder="ex. « comment » vers 0:40"></textarea></label>
+<label>Autre chose à dire sur cet enregistrement ? (facultatif)
+<textarea data-q="uwagi-1" rows="3"></textarea></label>
+<p><button type="button" id="dalej-1">Passer au deuxième enregistrement</button></p>
+<p class="err" id="err-1"></p>
+</fieldset>
+</section>
+<section id="s-2" class="locked">
+<h2>Deuxième enregistrement</h2>
+<audio id="au-2" controls preload="none"></audio>
+<p class="gate" id="gate-2">Écoutez l&#x27;enregistrement en entier pour débloquer les questions.</p>
+<fieldset id="q-2" disabled>
+<label>Comment jugez-vous la clarté de la prononciation dans cet enregistrement ?
+<select data-q="clarte-2" required><option value=""></option><option>Tout est prononcé correctement</option><option>Presque tout, une ou deux hésitations</option><option>Plusieurs mots sonnent faux</option><option>Beaucoup de mots sonnent faux</option><option>La prononciation est mauvaise d&#x27;un bout à l&#x27;autre</option></select></label>
+<label>À quel point ce narrateur sonne-t-il naturel, plutôt que mécanique ?
+<span class="slider-row"><input type="range" data-q="naturel-2" min="1" max="10" step="1" value="5"><span class="slider-val" id="val-naturel-2">5</span></span>
+<span class="slider-hint">1 = très mécanique, comme un robot ; 10 = parfaitement naturel. Déplacez le curseur pour noter.</span></label>
+<label>Quels mots vous ont paru mal prononcés dans cet enregistrement ? Notez-les, et si possible le moment approximatif. (facultatif)
+<textarea data-q="slowa-2" rows="3" placeholder="ex. « comment » vers 0:40"></textarea></label>
+<label>Autre chose à dire sur cet enregistrement ? (facultatif)
+<textarea data-q="uwagi-2" rows="3"></textarea></label>
+<p><button type="button" id="dalej-2">Passer aux questions finales</button></p>
+<p class="err" id="err-2"></p>
+</fieldset>
+</section>
+
+<section id="s-final" class="locked">
+<h2>Questions finales</h2>
+<fieldset id="q-final" disabled>
+<label>Dans l&#x27;ensemble, quel enregistrement est le meilleur pour un documentaire d&#x27;une heure ?</label>
+<div class="choice-row"><label><input type="radio" name="wybor" value="1">Le premier</label><label><input type="radio" name="wybor" value="2">Le deuxième</label></div>
+<label>Lequel des deux prononce le plus clairement ?
+<select data-q="wyrazniej" required><option value=""></option><option>Le premier, nettement</option><option>Le premier, un peu</option><option>Aucune différence audible</option><option>Le deuxième, un peu</option><option>Le deuxième, nettement</option></select></label>
+<label>Est-ce que l&#x27;un de ces deux narrateurs conviendrait vraiment pour un documentaire d&#x27;une heure en français ?
+<select data-q="nadaje-sie" required><option value=""></option><option>Oui, celui que j&#x27;ai choisi conviendrait</option><option>C&#x27;est le meilleur des deux, mais aucun n&#x27;est vraiment convaincant</option><option>Non, les deux sont mauvais</option></select></label>
+<label>Pourquoi ? Qu&#x27;est-ce qui a déterminé votre réponse ?
+<textarea data-q="dlaczego" rows="3" required></textarea></label>
+<label>Avez-vous entendu des mots mal prononcés ? Lesquels, et dans quel enregistrement ?
+<textarea data-q="zle-slowa" rows="3" required></textarea></label>
+<label>Avez-vous remarqué des consonnes finales prononcées là où elles devraient rester muettes (par exemple le « t » de « comment », « avant », « tout ») ?
+<select data-q="spolgloski" required><option value=""></option><option>Non, je n&#x27;ai rien remarqué de tel</option><option>Oui, dans le premier enregistrement</option><option>Oui, dans le deuxième enregistrement</option><option>Oui, dans les deux</option></select></label>
+<label>L&#x27;un des deux vous a-t-il paru plus mécanique, plus « robotique » que l&#x27;autre ?
+<select data-q="robot" required><option value=""></option><option>Non, les deux sonnent pareil</option><option>Le premier est plus mécanique</option><option>Le deuxième est plus mécanique</option></select></label>
+<label>Autre chose que nous devrions savoir ? (facultatif)
+<textarea data-q="uwagi-koncowe" rows="3"></textarea></label>
+<p><button type="button" id="wyslij">Envoyer les réponses</button></p>
+<p class="err" id="err-final"></p>
+</fieldset>
+</section>
+</form>
+
+<section id="koniec">
+<h2>Merci !</h2>
+<p>Vos réponses ont été enregistrées.</p>
+<p>Code de complétion Prolific :</p>
+<p><span class="code">VIDR-SONDA-FR</span></p>
+<p><a href="https://app.prolific.com/submissions/complete?cc=VIDR-SONDA-FR"><button type="button">Prolific &rarr;</button></a></p>
+<textarea id="wynik" rows="10" hidden></textarea>
+</section>
+
+<script>
+(function(){
+"use strict";
+var MSG={"gate_done": "Enregistrement écouté en entier - questions débloquées.", "err_clip": "Veuillez répondre aux questions et déplacer le curseur.", "err_final": "Veuillez répondre à toutes les questions obligatoires.", "err_choice": "Veuillez choisir l'un des enregistrements.", "save_failed": "L'enregistrement sur le serveur a échoué - copiez le texte ci-dessous et collez-le dans le champ de réponse Prolific."};
+var params=new URLSearchParams(location.search);
+var pid=params.get("PROLIFIC_PID")||"";
+var studyId=params.get("STUDY_ID")||"";
+var sessionId=params.get("SESSION_ID")||"";
+var seedSource=(pid||sessionId)?pid+"|"+sessionId:String(Date.now())+String(Math.random());
+function seed32(v){var h=2166136261;for(var i=0;i<v.length;i++){h^=v.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var random=rng(seed32(seedSource));
+
+var VARIANTS={"v1": ["K1", "K2"], "v2": ["K2", "K1"]};
+var forced=params.get("v");
+var names=Object.keys(VARIANTS);
+var variant=(forced&&VARIANTS["v"+forced])?"v"+forced:names[Math.floor(random()*names.length)];
+var order=VARIANTS[variant];
+for(var i=1;i<=2;i++)document.getElementById("au-"+i).src="clips/clip-"+order[i-1]+".mp3";
+
+if(params.get("debug")==="1"){
+  for(var d=1;d<=2;d++)document.querySelector("#s-"+d+" h2").textContent+="  ["+variant+" | "+order[d-1]+"]";
+}
+
+var timeline={page_loaded:Date.now()};
+var watched={};
+
+function setupAudio(n){
+  var audio=document.getElementById("au-"+n);
+  var label=order[n-1];
+  var furthest=0,correcting=false,playedAt=null,done=false;
+  watched[label]=0;
+  audio.addEventListener("play",function(){
+    for(var o=1;o<=2;o++){if(o===n)continue;var other=document.getElementById("au-"+o);if(!other.paused)other.pause()}
+    if(!done&&audio.currentTime>furthest+0.35)audio.currentTime=furthest;
+    playedAt=performance.now();
+  });
+  audio.addEventListener("pause",function(){
+    if(playedAt!==null){watched[label]+=(performance.now()-playedAt)/1000;playedAt=null}
+  });
+  audio.addEventListener("ratechange",function(){if(audio.playbackRate!==1)audio.playbackRate=1});
+  audio.addEventListener("timeupdate",function(){
+    if(!correcting&&audio.currentTime<=furthest+0.75)furthest=Math.max(furthest,audio.currentTime);
+  });
+  audio.addEventListener("seeking",function(){
+    if(done)return;
+    if(Math.abs(audio.currentTime-furthest)>0.35){
+      correcting=true;audio.currentTime=furthest;
+      setTimeout(function(){correcting=false},0);
+    }
+  });
+  audio.addEventListener("ended",function(){
+    if(playedAt!==null){watched[label]+=(performance.now()-playedAt)/1000;playedAt=null}
+    done=true;
+    timeline["clip"+n+"_ended"]=Date.now();
+    document.getElementById("q-"+n).disabled=false;
+    var gate=document.getElementById("gate-"+n);
+    gate.textContent=MSG.gate_done;
+    gate.className="gate done";
+  });
+}
+for(var a=1;a<=2;a++)setupAudio(a);
+
+for(var sl=1;sl<=2;sl++)(function(n){
+  var slider=document.querySelector('[data-q="naturel-'+n+'"]');
+  slider.addEventListener("input",function(){
+    slider.dataset.touched="1";
+    document.getElementById("val-naturel-"+n).textContent=slider.value;
+  });
+})(sl);
+
+document.querySelectorAll('.choice-row input').forEach(function(radio){
+  radio.addEventListener("change",function(){
+    document.querySelectorAll('.choice-row label').forEach(function(lab){
+      lab.classList.toggle("picked",lab.contains(radio)&&radio.checked);
+    });
+  });
+});
+
+function el(name){return document.querySelector('[data-q="'+name+'"]')}
+function sel(name){var e=el(name);return{i:e.selectedIndex,t:e.value}}
+function unlock(id){var s=document.getElementById(id);s.classList.remove("locked");s.scrollIntoView({behavior:"smooth",block:"start"})}
+
+function clipBlock(n,err){
+  var clarte=sel("clarte-"+n);
+  var slider=el("naturel-"+n);
+  if(!clarte.i||slider.dataset.touched!=="1"){err.textContent=MSG.err_clip;return null}
+  err.textContent="";
+  return{clarity:clarte,natural:Number(slider.value),
+         words:el("slowa-"+n).value.trim()||null,
+         notes:el("uwagi-"+n).value.trim()||null};
+}
+
+document.getElementById("start").addEventListener("click",function(){
+  var err=document.getElementById("err-intro");
+  if(!sel("first-language").i||!sel("gear").i){err.textContent=MSG.err_final;return}
+  err.textContent="";
+  timeline.intro_done=Date.now();
+  unlock("s-1");
+});
+for(var b=1;b<=2;b++)(function(n){
+  document.getElementById("dalej-"+n).addEventListener("click",function(){
+    if(!clipBlock(n,document.getElementById("err-"+n)))return;
+    timeline["clip"+n+"_answered"]=Date.now();
+    if(n<2){unlock("s-2")}
+    else{document.getElementById("q-final").disabled=false;unlock("s-final")}
+  });
+})(b);
+
+document.getElementById("wyslij").addEventListener("click",function(){
+  var err=document.getElementById("err-final");
+  var answers=[];
+  for(var n=1;n<=2;n++){var a=clipBlock(n,err);if(!a)return;answers.push(a)}
+  var pick=document.querySelector('.choice-row input:checked');
+  if(!pick){err.textContent=MSG.err_choice;return}
+  var wyrazniej=sel("wyrazniej"),nadaje=sel("nadaje-sie"),
+      spolgloski=sel("spolgloski"),robot=sel("robot");
+  if(!wyrazniej.i||!nadaje.i||!spolgloski.i||!robot.i){err.textContent=MSG.err_final;return}
+  if(!el("dlaczego").value.trim()||!el("zle-slowa").value.trim()){
+    err.textContent=MSG.err_final;return}
+  err.textContent="";
+  timeline.submitted=Date.now();
+  var payload={
+    schema:"vidr-fr-pronunciation-probe-response/v1",
+    language:"fr",
+    prolific:{pid:pid||null,study_id:studyId||null,session_id:sessionId||null},
+    variant:variant,
+    presentation_order:order,
+    watched_seconds:watched,
+    timeline:timeline,
+    intro:{first_language:sel("first-language"),gear:sel("gear")},
+    clips:answers.map(function(a,i){return{position:i+1,label:order[i],answers:a}}),
+    final:{
+      better_position:Number(pick.value),
+      better_label:order[Number(pick.value)-1],
+      clearer:wyrazniej,
+      usable:nadaje,
+      why:el("dlaczego").value.trim(),
+      bad_words:el("zle-slowa").value.trim(),
+      final_consonants:spolgloski,
+      robotic:robot,
+      notes:el("uwagi-koncowe").value.trim()||null
+    }
+  };
+  var button=document.getElementById("wyslij");
+  button.disabled=true;
+  var fd=new FormData();
+  fd.set("entry.997611096",JSON.stringify(payload));
+  fetch("https://docs.google.com/forms/d/e/1FAIpQLSdJLdxf5XM8yp9iDj096FrxSLCx39M026_XEwC6uMfrkitkNA/formResponse",{method:"POST",mode:"no-cors",body:fd})
+    .then(function(){finish(payload,true)})
+    .catch(function(){finish(payload,false)});
+});
+
+function finish(payload,saved){
+  document.getElementById("ankieta").style.display="none";
+  var end=document.getElementById("koniec");
+  end.style.display="block";
+  if(!saved){
+    end.querySelector("p").textContent=MSG.save_failed;
+    var box=document.getElementById("wynik");
+    box.hidden=false;box.value=JSON.stringify(payload,null,2);box.select();
+  }
+  end.scrollIntoView({behavior:"smooth"});
+}
+})();
+</script>
+</body>
+</html>
